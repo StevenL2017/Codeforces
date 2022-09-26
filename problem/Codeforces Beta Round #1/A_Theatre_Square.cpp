@@ -58,7 +58,7 @@ const int MAXN = 1e6 + 3;
 #define loop(i,start,end) for(auto i=(start<end)?start:start-1;(start<end)?i<end:i>=end;(start<end)?i++:i--)
 
 int main() {
-    int n, m, a;
+    long long n, m, a;
     cin >> n >> m >> a;
     cout << ((n + a - 1) / a) * ((m + a - 1) / a);
     return 0;
