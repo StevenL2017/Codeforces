@@ -56,3 +56,7 @@ const int MAXN = 1e6 + 3;
 #define ook order_of_key
 
 #define loop(i,start,end) for(auto i=(start<end)?start:start-1;(start<end)?i<end:i>=end;(start<end)?i++:i--)
+
+int main() {
+    return 0;
+}
