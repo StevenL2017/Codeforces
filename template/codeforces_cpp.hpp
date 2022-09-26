@@ -36,16 +36,16 @@ const int MAXN = 1e6 + 3;
 #define _  %  MOD
 #define __ %= MOD
 
-#define      each(it,s)        for(vit it = s.begin(); it != s.end(); ++it)
-#define      sortA(v)          sort(v.begin(), v.end())
-#define      sortD(v)          sort(v.begin(), v.end(), greater<auto>())
-#define      fill(a)           memset(a, 0, sizeof (a))
+#define each(it,s)        for(vit it = s.begin(); it != s.end(); ++it)
+#define sortA(v)          sort(v.begin(), v.end())
+#define sortD(v)          sort(v.begin(), v.end(), greater<auto>())
+#define fill(a)           memset(a, 0, sizeof (a))
 
-#define      rep(i, n)         for(int i = 0; i < (n); ++i)
-#define      repA(i, a, n)     for(int i = a; i <= (n); ++i)
-#define      repD(i, a, n)     for(int i = a; i >= (n); --i)
-#define 	 pq(x)			   priority_queue<x,std::vector<x>,compare>
-#define 	 rpq(x)			   priority_queue<x,std::vector<x>,compare>
+#define rep(i, n)         for(int i = 0; i < (n); ++i)
+#define repA(i, a, n)     for(int i = a; i <= (n); ++i)
+#define repD(i, a, n)     for(int i = a; i >= (n); --i)
+#define pq(x)			  priority_queue<x,std::vector<x>,compare>
+#define rpq(x)			  priority_queue<x,std::vector<x>,compare>
 
 #define fi first
 #define se second
