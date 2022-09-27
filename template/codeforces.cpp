@@ -36,13 +36,13 @@ const int MAXN = 1e6 + 3;
 #define _  %  MOD
 #define __ %= MOD
 
-#define sortA(v)          sort(v.begin(), v.end())
-#define sortD(v)          sort(v.begin(), v.end(), greater<auto>())
+#define sortA(v)               sort(v.begin(), v.end())
+#define sortD(v)               sort(v.begin(), v.end(), greater<auto>())
 
-#define rep(i, n)         for(int i = 0; i < n; ++i)
-#define repA(i, a, n)     for(int i = a; i <= n; ++i)
-#define repD(i, a, n)     for(int i = a; i >= n; --i)
-#define loop(i,start,end) for(auto i = (start<end)?start:start-1; (start<end)?i<end:i>=end; (start<end)?i++:i--)
+#define rep(i, n)              for(int i = 0; i < n; ++i)
+#define repA(i, a, n)          for(int i = a; i <= n; ++i)
+#define repD(i, a, n)          for(int i = a; i >= n; --i)
+#define loop(i, start, end)    for(auto i = (start<end)?start:start-1; (start<end)?i<end:i>=end; (start<end)?i++:i--)
 
 int main() {
     return 0;
