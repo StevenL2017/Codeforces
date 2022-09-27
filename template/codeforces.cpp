@@ -17,12 +17,15 @@
 using namespace std;
 
 typedef long long ll;
-typedef pair<int,int> ii;
-typedef vector<int> vi;
-typedef vector<ii> vii;
-typedef vector<ll> vll;
-typedef vector<char> vc;
 typedef long double ld;
+typedef vector<int> vi;
+typedef vector<double> vd;
+typedef vector<ll> vll;
+typedef vector<ld> vld;
+typedef vector<char> vc;
+typedef vector<string> vs;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
 
 const int INF = 1e9 + 7;
 const int MOD = 1e9 + 7;
