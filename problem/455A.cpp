@@ -48,5 +48,23 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 int main() {
+    int n;
+    cin >> n;
+    int maxv;
+    map<int, int> cnt;
+    rep(i, n) {
+        int num;
+        cin >> num;
+        maxv = max(maxv, num);
+        cnt[num]++;
+    }
+
+    vll f(maxv + 1, 0);
+    f[1] = (cnt.find(1) != cnt.end()) ? 1LL * cnt[1] : 0LL;
+    repA(i, 2, maxv + 1) {
+        int v = (cnt.find(i) != cnt.end()) ? cnt[i] : 0;
+        f[i] = max(f[i - 1], f[i - 2] + 1LL * i * v);
+    }
+    cout << f[maxv];
     return 0;
 }
