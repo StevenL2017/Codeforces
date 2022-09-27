@@ -48,5 +48,20 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 int main() {
+    int n, m;
+    cin >> n >> m;
+
+    function<int(int, int)> dfs = [&](int x, int y) -> int {
+        if (x >= y) {
+            return x - y;
+        }
+        if (y % 2 == 0) {
+            return 1 + dfs(x, y / 2);
+        } else {
+            return 2 + dfs(x, (y + 1) / 2);
+        }
+    };
+    
+    cout << dfs(n, m);
     return 0;
 }
