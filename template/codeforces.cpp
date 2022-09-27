@@ -36,6 +36,9 @@ const int MAXN = 1e6 + 3;
 #define _  %  MOD
 #define __ %= MOD
 
+#define pq(T)                  priority_queue<T, vector<T>>
+#define rpq(T)                 priority_queue<T, vector<T>, greater<T>()>
+
 #define sortA(v)               sort(v.begin(), v.end())
 #define sortD(v)               sort(v.begin(), v.end(), greater<auto>())
 
