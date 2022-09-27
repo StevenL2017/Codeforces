@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cstring>
 #include <string>
+#include <tuple>
 #include <vector>
 #include <stack>
 #include <queue>
@@ -13,6 +14,7 @@
 #include <set>
 #include <map>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
