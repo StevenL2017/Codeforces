@@ -47,12 +47,30 @@ const int MAXN = 1e6 + 3;
 #define repD(i, a, n)          for(int i = a; i > n; --i)
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
-void solve() {
-
-}
-
 int main() {
-    int t = 1;
-    // cin >> t;
-    while (t--) solve();
+    int c;
+    cin >> c;
+    while (c--) {
+        int n;
+        cin >> n;
+        string T;
+        cin >> T;
+
+        ll ans = 0LL;
+        unordered_set<int> deleted;
+        rep(i, n) {
+            if (T[i] == '0') {
+                int x = i + 1, j = 1;
+                while (x * j - 1 < n && T[x * j - 1] == '0') {
+                    if (deleted.find(x * j - 1) == deleted.end()) {
+                        ans += x;
+                        deleted.emplace(x * j - 1);
+                    }
+                    j++;
+                }
+            }
+        }
+        cout << ans << "\n";
+    }
+    return 0;
 }
