@@ -48,13 +48,39 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int n;
+    cin >> n;
 
+    vi nums;
+    rep(i, n) {
+        int num;
+        cin >> num;
+        nums.push_back(num % 10);
+    }
+
+    unordered_set<int> one;
+    unordered_set<int> two;
+    rep(i, n) {
+        for (auto &x : two) {
+            if ((nums[i] + x) % 10 == 3) {
+                cout << "YES" << "\n";
+                return;
+            }
+        }
+        if (two.size() < 10) {
+            for (auto &x : one) {
+                two.emplace((nums[i] + x) % 10);
+            }
+        }
+        one.emplace(nums[i]);
+    }
+    cout << "NO" << "\n";
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) solve();
 }
