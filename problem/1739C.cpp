@@ -31,7 +31,7 @@ typedef vector<ii> vii;
 
 const int INF = 1e9 + 7;
 const int MOD = 998244353;
-const int MAXN = 1e6 + 3;
+const int MAXN = 61;
 
 #define _  %  MOD
 #define __ %= MOD
@@ -47,8 +47,17 @@ const int MAXN = 1e6 + 3;
 #define repD(i, a, n)          for(int i = a; i > n; --i)
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
-ll c[61][61];
-ll memo[61];
+ll c[MAXN][MAXN];
+ll memo[MAXN];
+
+void comb(int x) {
+    for (int i = 0; i < x; i++) {
+        for (int j = 0; j <= i; j++) {
+            if (!j) c[i][j] = 1;
+            else c[i][j] = (c[i - 1][j - 1] + c[i - 1][j]) % MOD;
+        }
+    }
+}
 
 ll dfs(int x) {
     if (x == 0) {
@@ -76,14 +85,11 @@ void solve() {
 }
 
 int main() {
-    for (int i = 0; i < 61; i++) {
-        for (int j = 0; j <= i; j++) {
-            if (!j) c[i][j] = 1;
-            else c[i][j] = (c[i - 1][j - 1] + c[i - 1][j]) % MOD;
-        }
-    }
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
+
+    comb(MAXN);
+    
     int t = 1;
     cin >> t;
     while (t--) solve();
