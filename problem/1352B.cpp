@@ -76,7 +76,7 @@ void solve() {
                     }
                 }
             }
-            else if ((n - (k - 1) * 2) >= 0 && (n - (k - 1) * 2) % 2 == 0) {
+            else if ((n - (k - 1) * 2) > 0 && (n - (k - 1) * 2) % 2 == 0) {
                 cout << "YES" << "\n";
                 int m = n - (k - 1) * 2;
                 while (k--) {

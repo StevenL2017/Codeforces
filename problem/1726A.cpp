@@ -48,7 +48,28 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int n;
+    cin >> n;
+    vi nums;
+    rep(i, n) {
+        int num;
+        cin >> num;
+        nums.push_back(num);
+    }
 
+    int ans = 0;
+    int minv = 1000, maxv = 0;
+    rep(i, n) {
+        if (i > 0) {
+            maxv = max(maxv, nums[i]);
+        }
+        if (i < n - 1) {
+            minv = min(minv, nums[i]);
+            ans = max(ans, nums[i] - nums[i + 1]);
+        }
+    }
+    ans = max(ans, max(maxv - nums.front(), nums.back() - minv));
+    cout << ans << "\n";
 }
 
 int main() {

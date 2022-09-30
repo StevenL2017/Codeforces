@@ -48,7 +48,31 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int n, k;
+    cin >> n >> k;
 
+    unordered_set<int> s;
+    rep(i, n) {
+        int num;
+        cin >> num;
+        s.insert(num);
+    }
+    
+    if (s.size() > k) {
+        cout << -1 << "\n";
+        return;
+    }
+
+    cout << n * k << "\n";
+    rep(i, n) {
+        for (auto &x : s) {
+            cout << x << " ";
+        }
+        for (int j = 0; j < k - s.size(); j++) {
+            cout << 1 << " ";
+        }
+    }
+    cout << "\n";
 }
 
 int main() {

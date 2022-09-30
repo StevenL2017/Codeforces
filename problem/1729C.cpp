@@ -48,7 +48,53 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    string s;
+    cin >> s;
 
+    int n = s.size();
+    unordered_map<int, vector<int>> mp;
+    int source, target;
+    rep(i, n) {
+        int idx = (int)(s[i]) - (int)('a') + 1;
+        mp[idx].push_back(i + 1);
+        if (i == 0) {
+            source = idx;
+        }
+        if (i + 1 == n) {
+            target = idx;
+        }
+    }
+    
+    int cost = 0;
+    int pre = source;
+    vi nums;
+    if (source <= target) {
+        repA(i, source, target + 1) {
+            if (mp.find(i) != mp.end()) {
+                cost += i - pre;
+                pre = i;
+                for (auto &x : mp[i]) {
+                    nums.push_back(x);
+                }
+            }
+        }
+    } else {
+        repD(i, source, target - 1) {
+            if (mp.find(i) != mp.end()) {
+                cost += pre - i;
+                pre = i;
+                for (auto &x : mp[i]) {
+                    nums.push_back(x);
+                }
+            }
+        }
+    }
+    
+    cout << cost << " " << nums.size() << "\n";
+    for (auto &x : nums) {
+        cout << x << " ";
+    }
+    cout << "\n";
 }
 
 int main() {
