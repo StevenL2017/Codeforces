@@ -59,22 +59,23 @@ void solve() {
 
     function<bool(int)> check = [&](int x) -> bool {
         int cnt = 0;
-        function<void(int, int, int)> dfs = [&](int node, int d, int limit) -> void {
-            if (d > limit) cnt++;
+        function<int(int)> dfs = [&](int node) -> int {
+            int cur = 0;
             for (auto& nxt : graph[node]) {
-                if (d <= limit) {
-                    dfs(nxt, d + 1, limit);
+                int d = dfs(nxt) + 1;
+                if (node != 0 && d == x) {
+                    cnt++;
                 } else {
-                    dfs(nxt, 2, limit);
+                    cur = max(cur, d);
                 }
             }
+            return cur;
         };
-        dfs(0, 0, x);
+        dfs(0);
         return cnt <= k;
     };
 
-    int left = 1;
-    int right = n - 1;
+    int left = 1, right = n - 1;
     int ans = right;
     while (left <= right) {
         int mid = left + (right - left) / 2;
@@ -84,9 +85,6 @@ void solve() {
         } else {
             left = mid + 1;
         }
-    }
-    if (ans > 1 && check(ans - 1)) {
-        ans--;
     }
     cout << ans << "\n";
 }
