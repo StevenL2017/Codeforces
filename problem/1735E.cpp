@@ -58,11 +58,6 @@ void solve() {
         cin >> d2[i];
     }
 
-    vi d(n);
-    rep(i, n) {
-        d[i] = d1[i] - d2[i];
-    }
-
     
 }
 
