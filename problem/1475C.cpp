@@ -48,7 +48,29 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int a, b, k;
+    cin >> a >> b >> k;
+    vi ca(a, 0), cb(b, 0);
+    rep(i, k) {
+        int j;
+        cin >> j;
+        ca[j - 1]++;
+    }
+    rep(i, k) {
+        int j;
+        cin >> j;
+        cb[j - 1]++;
+    }
 
+    ll tot = 1LL * k * (k - 1) / 2;
+    ll invalid = 0LL;
+    for (auto& c : ca) {
+        invalid += 1LL * c * (c - 1) / 2;
+    }
+    for (auto& c : cb) {
+        invalid += 1LL * c * (c - 1) / 2;
+    }
+    cout << tot - invalid << endl;
 }
 
 int main() {
