@@ -40,7 +40,7 @@ const int MAXN = 1e6 + 3;
 #define rpq(T)                 priority_queue<T, vector<T>, greater<T>>
 
 #define sortA(v)               sort(v.begin(), v.end())
-#define sortD(v, T)            sort(v.begin(), v.end(), greater<T>())
+#define sortD(v)               sort(v.rbegin(), v.rend())
 
 #define rep(i, n)              for(int i = 0; i < n; ++i)
 #define repA(i, a, n)          for(int i = a; i < n; ++i)
