@@ -50,28 +50,24 @@ const int MAXN = 1e6 + 3;
 void solve() {
     int n;
     cin >> n;
-    vi nums;
-    for (auto &x : nums) cin >> x;
-
-    ll ans = 0LL, pre = 0LL;
-    unordered_map<ll, int> mp;
-    mp[0] = -1;
-    int start = 0;
+    vi nums(n);
+    vll pre(n + 1, 0LL);
     rep(i, n) {
-        if (nums[i] == 0) {
-            pre = 0LL;
-            mp.clear();
-            mp[0] = i;
-            start = i + 1;
-            continue;
+        cin >> nums[i];
+        pre[i + 1] = pre[i] + nums[i];
+    }
+
+    ll ans = 0LL;
+    set<ll> s = {0};
+    int left = 0, right = 0;
+    while (left < n) {
+        while (right < n && !s.count(pre[right + 1])) {
+            right++;
+            s.insert(pre[right]);
         }
-        pre += nums[i];
-        if (mp.find(pre) == mp.end()) {
-            ans += i - start + 1;
-        } else {
-            ans += i - mp[pre] - 1;
-        }
-        mp[pre] = i;
+        ans += right - left;
+        s.erase(pre[left]);
+        left++;
     }
     cout << ans << endl;
 }
