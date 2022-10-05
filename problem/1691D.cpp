@@ -49,42 +49,34 @@ const int MAXN = 1e6 + 3;
 
 const ll NINF = -1e15;
 
-vector<int> max_left(vector<int>& nums){
+vector<vector<int>> max_range(vector<int>& nums){
     int n = nums.size();
     stack<int> st;
-    vector<int> ans(n, -1);
-    for (int i = n - 1; i >= 0; i--) {
-        while (!st.empty() && nums[i] > nums[st.top()]) {
-            ans[st.top()] = i;
-            st.pop();
-        }
-        st.push(i);
-    }
-    return ans;
-}
-
-vector<int> max_right(vector<int>& nums){
-    int n = nums.size();
-    stack<int> st;
-    vector<int> ans(n, n);
+    vector<int> left(n, -1), right(n, n);
     for (int i = 0; i < n; i++) {
-        while (!st.empty() && nums[i] > nums[st.top()]) {
-            ans[st.top()] = i;
+        while (!st.empty() && nums[i] >= nums[st.top()]) {
+            right[st.top()] = i;
             st.pop();
+        }
+        if (!st.empty()) {
+            left[i] = st.top();
         }
         st.push(i);
     }
+
+    vector<vector<int>> ans;
+    ans.push_back(left);
+    ans.push_back(right);
     return ans;
 }
 
 class SegmentTree {
 private:
-    vector<ll> mx;
+    vll mx;
 
 public:
     SegmentTree(int n) {
-        vector<ll> mx(n * 4, NINF);
-        this->mx = mx;
+        mx.resize(n * 4, NINF);
     }
     
     void update(int root, int l, int r, int idx, ll val) {
@@ -133,8 +125,9 @@ void solve() {
         suf[i] = suf[i + 1] + nums[i];
     }
 
-    vector<int> maxl = max_left(nums);
-    vector<int> maxr = max_right(nums);
+    vector<vi> maxlr = max_range(nums);
+    vector<int> maxl = maxlr[0];
+    vector<int> maxr = maxlr[1];
 
     SegmentTree pre_tree(n), suf_tree(n);
     rep(i, n) {
