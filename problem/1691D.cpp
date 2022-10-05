@@ -132,8 +132,13 @@ void solve() {
     }
 
     rep(i, n) {
-        ll left_max = suf_tree.query(1, 1, n, maxr[0][i] + 1 + 1, i - 1 + 1);
-        ll right_max = pre_tree.query(1, 1, n, i + 1 + 1, maxr[1][i] - 1 + 1);
+        ll left_max = 0LL, right_max = 0LL;
+        if (i > 0) {
+            left_max = suf_tree.query(1, 1, n, maxr[0][i] + 1 + 1, i - 1 + 1) - suf[i];
+        }
+        if (i < n - 1) {
+            right_max = pre_tree.query(1, 1, n, i + 1 + 1, maxr[1][i] - 1 + 1) - pre[i];
+        }
         if (left_max > 0 || right_max > 0) {
             cout << "NO" << endl;
             return;
