@@ -70,44 +70,15 @@ vector<vector<int>> max_range(vector<int>& nums){
     return ans;
 }
 
-class SegmentTree {
-private:
-    vll mx;
-
-public:
-    SegmentTree(int n) {
-        mx.resize(n * 4, NINF);
-    }
-    
-    void update(int root, int l, int r, int idx, ll val) {
-        if (l == r) {
-            mx[root] = val;
-            return;
-        }
-        int m = l + (r - l) / 2;
-        if (idx <= m) {
-            update(root * 2, l, m, idx, val);
-        } else {
-            update(root * 2 + 1, m + 1, r, idx, val);
-        }
-        mx[root] = max(mx[root * 2], mx[root * 2 + 1]);
-    }
-    
-    ll query(int root, int l, int r, int L, int R) {
-        if (L <= l && r <= R) {
-            return mx[root];
-        }
-        ll ans = 0LL;
-        int m = l + (r - l) / 2;
-        if (L <= m) {
-            ans = query(root * 2, l, m, L, R);
-        }
-        if (R > m) {
-            ans = max(ans, query(root * 2 + 1, m + 1, r, L, R));
-        }
-        return ans;
-    }
-};
+ll query(vector<ll> &tree, int node, int ns, int ne, int qs, int qe) {
+    if (qe < ns || qs > ne) return NINF;
+    if (qs <= ns && ne <= qe) return tree[node];
+ 
+    int mid = ns + (ne - ns) / 2;
+    ll leftQuery = query(tree, 2 * node, ns, mid, qs, qe);
+    ll rightQuery = query(tree, 2 * node + 1, mid + 1, ne, qs, qe);
+    return max(leftQuery, rightQuery);
+}
 
 void solve() {
     int n;
@@ -129,20 +100,26 @@ void solve() {
     vector<int> maxl = maxlr[0];
     vector<int> maxr = maxlr[1];
 
-    SegmentTree pre_tree(n), suf_tree(n);
-    rep(i, n) {
-        pre_tree.update(1, 1, n, i + 1, pre[i]);
-        suf_tree.update(1, 1, n, i + 1, suf[i]);
+    // Round off n to next power of 2
+    int _n = n;
+    while (__builtin_popcount(_n) != 1) _n++;
+
+    // Two max-segtrees, one on the prefix sums, one on the suffix sums
+    vector<ll> pre_tree(2 * _n, NINF), suf_tree(2 * _n, NINF);
+
+    for (int i = 0; i < n; i++) {
+        pre_tree[_n + i] = pre[i];
+        suf_tree[_n + i] = suf[i];
+    }
+
+    for (int i = _n - 1; i >= 1; i--) {
+        pre_tree[i] = max(pre_tree[2 * i], pre_tree[2 * i + 1]);
+        suf_tree[i] = max(suf_tree[2 * i], suf_tree[2 * i + 1]);
     }
 
     rep(i, n) {
-        ll left_max = 0LL, right_max = 0LL;
-        if (i > 0 && maxl[i] + 1 <= i - 1) {
-            left_max = suf_tree.query(1, 1, n, maxl[i] + 1 + 1, i - 1 + 1) - suf[i];
-        }
-        if (i < n - 1 && i + 1 <= maxr[i] - 1) {
-            right_max = pre_tree.query(1, 1, n, i + 1 + 1, maxr[i] - 1 + 1) - pre[i];
-        }
+        ll right_max = query(pre_tree, 1, 0, _n - 1, i + 1, maxr[i] - 1) - pre[i];
+        ll left_max = query(suf_tree, 1, 0, _n - 1, maxl[i] + 1, i - 1) - suf[i];
         if (left_max > 0 || right_max > 0) {
             cout << "NO" << endl;
             return;
