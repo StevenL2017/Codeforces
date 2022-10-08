@@ -12,7 +12,6 @@
 #include <set>
 #include <map>
 #include <tuple>
-#include <numeric>
 #include <algorithm>
 #include <functional>
 #include <utility>
@@ -28,6 +27,7 @@ typedef vector<ld> vld;
 typedef vector<char> vc;
 typedef vector<string> vs;
 typedef pair<int, int> ii;
+typedef vector<ii> vii;
 
 const int INF = 1e9 + 7;
 const int MOD = 1e9 + 7;
@@ -48,7 +48,23 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int n, m, x;
+    cin >> n >> m >> x;
 
+    set<ii> s;
+    rep(i, m) {
+        s.insert({0, i + 1});
+    }
+    cout << "YES" << endl;
+    rep(i, n) {
+        int h;
+        cin >> h;
+        auto p = *s.begin();
+        s.erase(p);
+        s.insert({p.first + h, p.second});
+        cout << p.second << " ";
+    }
+    cout << endl;
 }
 
 int main() {
