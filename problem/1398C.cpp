@@ -49,38 +49,10 @@ const int MAXN = 1e6 + 3;
 
 void solve() {
     int n;
-    cin >> n;
-    vi nums(n);
-    int minv = INF, cnt = 0;
-    for (auto& x: nums) {
-        cin >> x;
-        if (x < minv) {
-            minv = x;
-            cnt = 1;
-        } else if (x == minv) {
-            cnt++;
-        }
-    }
+    string s;
+    cin >> n >> s;
 
-    sortA(nums);
-    int a = nums[1];
-    repA(i, 2, n) {
-        a &= nums[i];
-    }
-    if (a != nums[0]) {
-        cout << 0 << endl;
-        return;
-    }
-
-    ll ans = cnt;
-    ans *= (cnt - 1);
-    ans __;
-    while (n - 2 > 0) {
-        ans *= (n - 2);
-        ans __;
-        n--;
-    }
-    cout << ans << endl;
+    
 }
 
 int main() {
