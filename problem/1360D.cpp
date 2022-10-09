@@ -48,23 +48,7 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int n;
-    string s;
-    cin >> n >> s;
 
-    ll ans = 0LL;
-    map<int, int> cnt;
-    cnt[1] = 1;
-    int p = 0;
-    rep(i, n) {
-        p += s[i] - '0';
-        int cur = p - i;
-        if (cnt.find(cur) != cnt.end()) {
-            ans += cnt[cur];
-        }
-        cnt[cur]++;
-    }
-    cout << ans << endl;
 }
 
 int main() {
