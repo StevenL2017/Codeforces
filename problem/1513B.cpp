@@ -51,9 +51,25 @@ void solve() {
     int n;
     cin >> n;
     vi nums(n);
-    for (auto& x: nums) cin >> x;
+    int minv = INF, cnt = 0;
+    for (auto& x: nums) {
+        cin >> x;
+        if (x < minv) {
+            minv = x;
+            cnt = 1;
+        } else if (x == minv) {
+            cnt++;
+        }
+    }
 
-    
+    ll ans = 0LL;
+    ans = cnt * (cnt - 1);
+    ans __;
+    if (n > 3) {
+        ans *= (n - 2) * (n - 3);
+        ans __;
+    }
+    cout << ans << endl;
 }
 
 int main() {
