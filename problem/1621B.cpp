@@ -48,7 +48,42 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int n;
+    cin >> n;
+    int minl = INF, maxr = 0, max_len = 0;
+    int lc = INF, rc = INF, lrc = INF;
+    int tot = INF;
+    rep(i, n) {
+        int l, r, c;
+        cin >> l >> r >> c;
 
+        if (l < minl) {
+            minl = l;
+            lc = c;
+        } else if (l == minl) {
+            lc = min(lc, c);
+        }
+
+        if (r > maxr) {
+            maxr = r;
+            rc = c;
+        } else if (r == maxr) {
+            rc = min(rc, c);
+        }
+
+        if (max_len < r - l + 1) {
+            max_len = r - l + 1;
+            lrc = c;
+        } else if (max_len == r - l + 1) {
+            lrc = min(lrc, c);
+        }
+
+        int tot = lc + rc;
+        if (max_len == maxr - minl + 1) {
+            tot = min(tot, lrc);
+        }
+        cout << tot << endl;
+    }
 }
 
 int main() {
