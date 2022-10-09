@@ -48,26 +48,7 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int n, k;
-    cin >> n >> k;
 
-    if (n <= k) {
-        cout << 1 << endl;
-    } else {
-        int ans = n, x = 1;
-        while (x * x <= n) {
-            if (n % x == 0) {
-                if (x <= k) {
-                    ans = min(ans, n / x);
-                }
-                if (n / x <= k) {
-                    ans = min(ans, x);
-                }
-            }
-            x++;
-        }
-        cout << ans << endl;
-    }
 }
 
 int main() {
