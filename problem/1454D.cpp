@@ -48,25 +48,42 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int n;
+    ll n;
     cin >> n;
-    vi a(n);
-    int minv = INF;
-    for (auto& x: a) {
-        cin >> x;
-        minv = min(minv, x);
+
+    map<ll, int> cnt;
+    ll x = 2, y = n;
+    while (x * x <= y) {
+        while (y % x == 0) {
+            cnt[x]++;
+            y /= x;
+        }
+        x++;
     }
 
-    vi b(n);
-    iota(b.begin(), b.end(), 0);
-    sort(b.begin(), b.end(), [&](int i, int j) { return a[i] < a[j]; });
-    rep(i, n) {
-        if (a[i] != a[b[i]] && a[i] % a[b[0]] != 0) {
-            cout << "NO" << endl;
-            return;
+    if (cnt.empty()) {
+        cout << 1 << endl;
+        cout << n << endl;
+        return;
+    }
+
+    ll c = 2, maxc = 0;
+    for (auto&& [k, v]: cnt) {
+        if (v > maxc) {
+            maxc = v;
+            c = k;
+        } else if (v == maxc) {
+            c = min(c, k);
         }
     }
-    cout << "YES" << endl;
+
+    ll tot = 1LL;
+    cout << maxc << endl;
+    rep(i, maxc - 1) {
+        cout << c << " ";
+        tot *= c;
+    }
+    cout << n / tot << endl;
 }
 
 int main() {

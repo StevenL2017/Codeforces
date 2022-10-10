@@ -48,25 +48,7 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int n;
-    cin >> n;
-    vi a(n);
-    int minv = INF;
-    for (auto& x: a) {
-        cin >> x;
-        minv = min(minv, x);
-    }
 
-    vi b(n);
-    iota(b.begin(), b.end(), 0);
-    sort(b.begin(), b.end(), [&](int i, int j) { return a[i] < a[j]; });
-    rep(i, n) {
-        if (a[i] != a[b[i]] && a[i] % a[b[0]] != 0) {
-            cout << "NO" << endl;
-            return;
-        }
-    }
-    cout << "YES" << endl;
 }
 
 int main() {

@@ -50,23 +50,31 @@ const int MAXN = 1e6 + 3;
 void solve() {
     int n;
     cin >> n;
-    vi a(n);
-    int minv = INF;
-    for (auto& x: a) {
+    vi nums(n);
+    ll tot = 0LL;
+    for (auto& x: nums) {
         cin >> x;
-        minv = min(minv, x);
+        tot += x;
     }
 
-    vi b(n);
-    iota(b.begin(), b.end(), 0);
-    sort(b.begin(), b.end(), [&](int i, int j) { return a[i] < a[j]; });
-    rep(i, n) {
-        if (a[i] != a[b[i]] && a[i] % a[b[0]] != 0) {
-            cout << "NO" << endl;
-            return;
-        }
+    ll ans = nums[0];
+    ll f = nums[0];
+    repA(i, 1, n - 1) {
+        f = max(f + nums[i], nums[i] * 1LL);
+        ans = max(ans, f);
     }
-    cout << "YES" << endl;
+    f = nums[1];
+    ans = max(ans, f);
+    repA(i, 2, n) {
+        f = max(f + nums[i], nums[i] * 1LL);
+        ans = max(ans, f);
+    }
+    
+    if (tot > ans) {
+        cout << "YES" << endl;
+    } else {
+        cout << "NO" << endl;
+    }
 }
 
 int main() {
