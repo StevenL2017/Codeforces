@@ -53,6 +53,26 @@ void solve() {
     string s;
     cin >> s;
 
+    if (s[0] == '0') {
+        rep(i, 2 * n) {
+            if (s[i] == '0') s[i] = '1';
+            else s[i] = '0';
+        }
+    }
+
+    vi cnt(2, 0);
+    for (auto& c: s) {
+        if (c == '0') {
+            cnt[0]++;
+        } else {
+            cnt[1]++;
+        }
+    }
+    if (cnt[1] % 2 != 0) {
+        cout << -1 << endl;
+        return;
+    }
+
     
 }
 
