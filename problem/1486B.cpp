@@ -48,7 +48,18 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    int n;
+    cin >> n;
+    vi x(n), y(n);
+    rep(i, n) {
+        cin >> x[i] >> y[i];
+    }
 
+    sortA(x);
+    sortA(y);
+    ll cx = x[n / 2] - x[(n - 1) / 2] + 1;
+    ll cy = y[n / 2] - y[(n - 1) / 2] + 1;
+    cout << cx * cy << endl;
 }
 
 int main() {
