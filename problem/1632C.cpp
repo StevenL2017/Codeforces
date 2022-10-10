@@ -48,18 +48,26 @@ const int MAXN = 1e6 + 3;
 #define loop(i, start, end)    for(auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int x, y;
-    cin >> x >> y;
+    int a, b;
+    cin >> a >> b;
 
-    if (x > y) {
-        cout << x + y << endl;
+    int ans = b - a;
+    for (int c = a; c < b; c++) {
+        int d = 0;
+        for (int i = 21; i >= 0; i--) {
+            int cur = 1 << i;
+            if (b & cur) {
+                d |= cur;
+            } else {
+                if (c & cur) {
+                    d |= cur;
+                    break;
+                }
+            }
+        }
+        ans = min(ans, c + (c | d) + 1 - a - b);
     }
-    else if (x == y) {
-        cout << x << endl;
-    }
-    else {
-        cout << y - (y % x) / 2 << endl;
-    }
+    cout << ans << endl;
 }
 
 int main() {
