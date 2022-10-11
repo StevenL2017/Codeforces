@@ -22,7 +22,7 @@ using namespace std;
 typedef long long ll;
 typedef vector<int> vi;
 
-const int MAXN = 1e6 + 3;
+const int MAXN = 1e5 + 1;
 const int INF = 1e9 + 7;
 const int MOD = 1e9 + 7;
 
@@ -40,11 +40,19 @@ const int MOD = 1e9 + 7;
 void solve() {
     int t, k;
     cin >> t >> k;
+    vector<ll> f(MAXN, 0);
+    f[0] = 1;
+    repA(i, 1, MAXN) {
+        f[i] = f[i - 1];
+        if (i - k >= 0) {
+            f[i] += f[i - k];
+            f[i] __;
+        }
+    }
     while (t--) {
         int a, b;
         cin >> a >> b;
-
-        
+        cout << (f[b] - f[a - 1] + MOD) _ << endl;
     }
 }
 
