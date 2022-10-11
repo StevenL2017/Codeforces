@@ -41,6 +41,32 @@ void solve() {
     int n;
     string s;
     cin >> n >> s;
+
+    vi ans;
+    bool b = 0;
+    for (int i = 0; i < 2 * n; i += 2) {
+        if (s[i] != s[i + 1]) {
+            if (b ^ (s[i] == '0')) {
+                ans.push_back(i);
+            } else {
+                ans.push_back(i + 1);
+            }
+            b ^= 1;
+        }
+    }
+
+    if (ans.size() % 2 != 0) {
+        cout << -1 << endl;
+        return;
+    }
+
+    cout << ans.size();
+    for (auto& x: ans) cout << " " << x + 1;
+    cout << endl;
+    for (int i = 1; i < 2 * n; i += 2) {
+        cout << i << " ";
+    }
+    cout << endl;
 }
 
 int main() {
