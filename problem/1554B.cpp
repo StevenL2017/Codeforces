@@ -42,6 +42,14 @@ void solve() {
     cin >> n >> k;
     vi a(n);
     rep(i, n) cin >> a[i];
+
+    ll ans = -1e12;
+    repA(i, max(0, n - 2 * k - 1), n - 1) {
+        repA(j, i + 1, n) {
+            ans = max(ans, 1LL * (i + 1) * (j + 1) - 1LL * k * (a[i] | a[j]));
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
