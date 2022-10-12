@@ -45,22 +45,18 @@ void solve() {
         cin >> b[i];
     }
 
-    function<bool(int)> dfs = [&] (int i) -> bool {
-        if (i > n) return false;
-        if (i == n) return true;
-        if (dfs(i + b[i] + 1)) return true;
-        int j = i + 1;
-        while (j < n) {
-            if (b[j] == j - i) {
-                if (dfs(j + 1)) return true;
-            }
-            j++;
+    vector<bool> f(n + 1, false);
+    f[0] = true;
+    rep(i, n) {
+        if (f[i] && i + b[i] < n) {
+            f[i + b[i] + 1] = true;
         }
-        return false;
-    };
+        if (i - b[i] >= 0 && f[i - b[i]]) {
+            f[i + 1] = true;
+        }
+    }
 
-    bool ans = dfs(0);
-    if (ans) cout << "YES" << endl;
+    if (f[n]) cout << "YES" << endl;
     else cout << "NO" << endl;
 }
 
