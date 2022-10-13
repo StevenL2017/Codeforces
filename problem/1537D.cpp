@@ -37,31 +37,30 @@ const int MOD = 1e9 + 7;
 #define repD(i, a, n)          for (int i = a; i > n; --i)
 #define loop(i, start, end)    for (auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
-map<int, bool> memo;
-
-bool dfs(int x) {
-    if (x == 1) return false;
-    if (memo.find(x) != memo.end()) return memo[x];
-    int d = 2;
-    while (d * d <= x) {
-        if (x % d == 0) {
-            if (!dfs(x - d) || !dfs(x - x / d)) {
-                memo[x] = true;
-                return true;
-            }
-        }
-        d++;
-    }
-    memo[x] = false;
-    return false;
-}
-
 void solve() {
     int n;
     cin >> n;
 
-    bool ans = dfs(n);
-    cout << (ans ? "Alice" : "Bob") << endl;
+    if (n % 2 == 1) {
+        cout << "Bob" << endl;
+        return;
+    }
+
+    int cnt = 0;
+    while (n % 2 == 0) {
+        cnt++;
+        n /= 2;
+    }
+
+    if (n > 1) {
+        cout << "Alice" << endl;
+    } else {
+        if (cnt % 2 == 0) {
+            cout << "Alice" << endl;
+        } else {
+            cout << "Bob" << endl;
+        }
+    }
 }
 
 int main() {
