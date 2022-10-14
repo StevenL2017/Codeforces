@@ -41,7 +41,13 @@ void solve() {
     ll n;
     cin >> n;
 
-    
+    ll ans = 0LL, g = 1LL;
+    for (int i = 1; g <= n; i++) {
+        g = lcm(g, i);
+        ans += n / g;
+        ans __;
+    }
+    cout << (ans + n) _ << endl;
 }
 
 int main() {
