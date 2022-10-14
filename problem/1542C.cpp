@@ -38,7 +38,10 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define loop(i, start, end)    for (auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
+    ll n;
+    cin >> n;
 
+    
 }
 
 int main() {
