@@ -38,35 +38,61 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define loop(i, start, end)    for (auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int n;
-    cin >> n;
-    map<int, int> mp;
-    rep(i, n) {
-        int num;
-        cin >> num;
-        mp[num] = i + 1;
-    }
-
-    int ans = 0;
-    repA(x, 3, 2 * n) {
-        int y = 1;
-        while (y * y < x) {
-            if (x % y == 0) {
-                int z = x / y;
-                if (mp.find(y) != mp.end() && mp.find(z) != mp.end() && mp[y] + mp[z] == x) {
-                    ans++;
-                }
-            }
-            y++;
+    int n, m;
+    cin >> n >> m;
+    map<int, int> cnt;
+    rep(i, m) {
+        int u, v;
+        cin >> u >> v;
+        if (u > v) {
+            cnt[v]++;
+        } else {
+            cnt[u]++;
         }
     }
-    cout << ans << endl;
+
+    set<int> d;
+    rep(i, n) {
+        if (cnt.find(i + 1) != cnt.end() && cnt[i + 1] > 0) {
+            d.insert(i + 1);
+        }
+    }
+
+    int q;
+    cin >> q;
+    while (q--) {
+        int t;
+        cin >> t;
+        if (t == 3) {
+            cout << n - d.size() << endl;
+        } else {
+            int u, v;
+            cin >> u >> v;
+            if (u > v) {
+                if (t == 1) {
+                    cnt[v]++;
+                    d.insert(v);
+                } else {
+                    cnt[v]--;
+                    if (cnt[v] == 0) d.erase(v);
+                }
+            } else {
+                if (t == 1) {
+                    cnt[u]++;
+                    d.insert(u);
+                } else {
+                    cnt[u]--;
+                    if (cnt[u] == 0) d.erase(u);
+                }
+            }
+        }
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) solve();
 }
