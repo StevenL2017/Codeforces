@@ -42,6 +42,20 @@ void solve() {
     cin >> n;
     vi p(n);
     rep(i, n) cin >> p[i];
+
+    vi pos(n);
+    rep(i, n) pos[p[i]] = i;
+
+    ll ans = 0;
+    int l = n, r = -1;
+    repA(i, 1, n + 1) {
+        if (i & 1) {
+            l = min(l, pos[i / 2]);
+            r = max(r, pos[i / 2]);
+        }
+        ans += max(0, min(n - i, l) - max(0, r + 1 - i) + 1);
+    }
+    cout << ans << endl;
 }
 
 int main() {
