@@ -42,55 +42,6 @@ void solve() {
     cin >> n;
     vi p(n);
     rep(i, n) cin >> p[i];
-
-    map<int, int> mp;
-    rep(i, n) {
-        mp[p[i]] = i;
-    }
-
-    int ans = 1;
-    int left = mp[0], right = mp[0];
-    repA(x, 1, n) {
-        left = min(left, mp[x - 1]);
-        right = max(right, mp[x - 1]);
-        if (mp[x] > left && mp[x] < right) {
-            continue;
-        } else {
-            if (right - left + 1 > 2 * x - 1) {
-                continue;
-            }
-            if (mp[x] < left) {
-                int left_limit = max(mp[x], right - 2 * x) + 1;
-                int right_limit = min(n - 1, left + 2 * x - 1);
-                if (left - left_limit <= right_limit - right) {
-                    int left_cnt = left - left_limit + 1;
-                    int right_cnt = left_limit + 2 * x - 1 - right + 1;
-                    int m = right_limit - right + 1 - right_cnt;
-                    ans += left_cnt * right_cnt + m;
-                } else {
-                    int right_cnt = right_limit - right + 1;
-                    int left_cnt = right_limit - 2 * x + 1 - left + 1;
-                    int m = left - left_limit + 1 - left_cnt;
-                    ans += left_cnt * right_cnt + m;
-                }
-            } else {
-                int left_limit = max(0, right - 2 * x + 1);
-                int right_limit = min(mp[x], left + 2 * x) - 1;
-                if (left - left_limit <= right_limit - right) {
-                    int left_cnt = left - left_limit + 1;
-                    int right_cnt = left_limit + 2 * x - 1 - right + 1;
-                    int m = right_limit - right + 1 - right_cnt;
-                    ans += left_cnt * right_cnt + m;
-                } else {
-                    int right_cnt = right_limit - right + 1;
-                    int left_cnt = right_limit - 2 * x + 1 - left + 1;
-                    int m = left - left_limit + 1 - left_cnt;
-                    ans += left_cnt * right_cnt + m;
-                }
-            }
-        }
-    }
-    cout << ans << endl;
 }
 
 int main() {
