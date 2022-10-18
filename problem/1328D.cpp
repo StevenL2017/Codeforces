@@ -42,6 +42,39 @@ void solve() {
     cin >> n;
     vi t(n);
     rep(i, n) cin >> t[i];
+
+    if (count(t.begin(), t.end(), t[0]) == n) {
+        cout << 1 << endl;
+        rep(i, n) cout << 1 << " ";
+        cout << endl;
+    } else {
+        if (n % 2 == 0) {
+            cout << 2 << endl;
+            rep(i, n) cout << i % 2 + 1 << " ";
+            cout << endl;
+            return;
+        }
+
+        rep(i, n) {
+            if (t[i] == t[(i + 1) % n]) {
+                vi ans(n);
+                for (int j = 0, pos = i + 1; pos < n; pos++, j ^= 1) {
+                    ans[pos] = j + 1;
+                }
+                for (int j = 0, pos = i; pos >= 0; pos--, j ^= 1) {
+                    ans[pos] = j + 1;
+                }
+                cout << 2 << endl;
+                rep(i, n) cout << ans[i] << " ";
+                cout << endl;
+                return;
+            }
+        }
+
+        cout << 3 << endl;
+        rep(i, n - 1) cout << i % 2 + 1 << " ";
+        cout << 3 << endl;
+    }
 }
 
 int main() {
