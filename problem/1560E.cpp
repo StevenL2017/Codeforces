@@ -44,11 +44,23 @@ void solve() {
     map<char, int> cnt;
     for (auto& c: t) cnt[c]++;
 
-    int m = cnt.size(), i = t.size() - 1, d = 0, end = i;
-    set<char> order;
+    int m = cnt.size(), i = t.size() - 1, d = 0, n = t.size();
+    vector<char> order;
     while (i >= 0) {
         int j = i;
-        while (j >= 0 && order.count(t[j])) {
+        char c;
+        while (j >= 0) {
+            bool exist = false;
+            for (auto& ch: order) {
+                if (t[j] == ch) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                c = t[j];
+                break;
+            }
             j--;
         }
         if (j < 0) {
@@ -56,15 +68,26 @@ void solve() {
             return;
         }
 
-        char c = t[j];
-        order.insert(c);
+        order.push_back(c);
         if (cnt[c] % m) {
             cout << -1 << endl;
             return;
         }
-        d += cnt[c] / m;
-        if (i - d >= 0) end = i;
-        i -= d;
+
+        int c_cnt = cnt[c] / m;
+        d += c_cnt;
+        if (n > d) n -= d;
+        while (j > i - d) {
+            if (t[j] == c) {
+                c_cnt--;
+            }
+            j--;
+        }
+        if (c_cnt != 0) {
+            cout << -1 << endl;
+            return;
+        }
+        i = j;
         m--;
     }
 
@@ -72,6 +95,36 @@ void solve() {
         cout << -1 << endl;
         return;
     }
+
+    string ans;
+    for (auto& c: order) {
+        ans = c + ans;
+    }
+
+    string nt;
+    rep(i, n) {
+        nt += t[i];
+    }
+
+    string f = nt;
+    for (auto& c: ans) {
+        string g;
+        for (auto& cf: f) {
+            if (cf != c) g += cf;
+        }
+        nt += g;
+        f = g;
+    }
+
+    if (nt != t) {
+        cout << -1 << endl;
+        return;
+    }
+
+    rep(i, n) {
+        cout << t[i];
+    }
+    cout << " " << ans << endl;
 }
 
 int main() {
