@@ -38,16 +38,38 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define loop(i, start, end)    for (auto i = start; (start<end)?i<end:i>end; (start<end)?i++:i--)
 
 void solve() {
-    int n, m;
-    cin >> n >> m;
+    int n;
+    cin >> n;
+    vi b(n);
+    rep(i, n) cin >> b[i];
 
-    
+    vector<vi> ans(n, vi(n));
+    rep(i, n) {
+        rep(j, n) {
+            ans[i][j] = ((i + 1) * (j + 1)) % n;
+        }
+    }
+
+    rep(i, n) {
+        int d = (b[i] - ans[i][i] + n) % n;
+        rep(j, n) {
+            ans[i][j] += d;
+            ans[i][j] %= n;
+        }
+    }
+
+    rep(i, n) {
+        rep(j, n) {
+            cout << ans[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) solve();
 }
