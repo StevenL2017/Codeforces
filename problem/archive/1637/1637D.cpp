@@ -37,7 +37,36 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define repD(i, a, n)          for (int i = a; i > n; --i)
 
 void solve() {
+    int n; cin >> n;
+    vi a(n), b(n);
+    rep(i, n) cin >> a[i];
+    rep(i, n) cin >> b[i];
 
+    if (n == 1) {
+        cout << 0 << endl;
+        return;
+    }
+
+    int sum_sq = 0, sum_mn = 0, sum_mx = 0;
+    rep(i, n) {
+        if (a[i] > b[i]) swap(a[i], b[i]);
+        sum_sq += a[i] * a[i] + b[i] * b[i];
+        sum_mn += a[i];
+        sum_mx += b[i];
+    }
+
+    bitset<MAXN> f;
+    f[0] = 1;
+    for (int i = 0; i < n; i++) {
+        int w = b[i] - a[i];
+        f |= f << w;
+    }
+
+    int ans = sum_mn * sum_mn + sum_mx * sum_mx;
+    for (int i = 0; i <= sum_mx - sum_mn; i++) {
+        if (f[i]) ans = min(ans, (sum_mn + i) * (sum_mn + i) + (sum_mx - i) * (sum_mx - i));
+    }
+    cout << (n - 2) * sum_sq + ans << endl;
 }
 
 int main() {
