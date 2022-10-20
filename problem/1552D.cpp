@@ -72,7 +72,7 @@ void solve() {
             }
             rep(i, n) {
                 rep(j, i) {
-                    if (abs(nums[j] - nums[i]) == num) return true;
+                    if (abs(nums[j] - nums[i]) == abs(num)) return true;
                 }
             }
             return false;
