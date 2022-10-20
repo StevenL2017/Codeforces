@@ -40,10 +40,23 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 void solve() {
     int n;
     cin >> n;
-    vi a(n);
-    rep(i, n) cin >> a[i];
+    vector<bool> in(MAXN, false);
+    int maxv = 0;
+    rep(i, n) {
+        int x; cin >> x;
+        in[x] = true;
+        maxv = max(maxv, x);
+    }
 
-    
+    int cnt = 0;
+    for (int i = 1; i <= maxv; i++) {
+        int g = 0;
+        for (int j = i; j <= maxv; j += i) {
+            if (in[j]) g = gcd(g, j);
+        }
+        cnt += g == i;
+    }
+    cout << cnt - n << endl;
 }
 
 int main() {
