@@ -38,7 +38,18 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define repD(i, a, n)          for (int i = a; i > n; --i)
 
 void solve() {
-
+    ll n; cin >> n;
+    ll x = n;
+    while (x % 2 == 0) x /= 2;
+    if (x == 1) {
+        cout << -1 << endl;
+    }
+    else if (x < 2e9 && x * (x + 1) / 2 <= n) {
+        cout << x << endl;
+    }
+    else {
+        cout << 2 * (n / x) << endl;
+    }
 }
 
 int main() {
