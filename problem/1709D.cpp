@@ -38,31 +38,7 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define repD(i, a, n)          for (int i = a; i > n; --i)
 
 void solve() {
-    int n; cin >> n;
-    vector<vi> nodes(n, vi(2));
-    vector<vi> graph(n);
-    rep(i, n) {
-        cin >> nodes[i][0] >> nodes[i][1];
-    }
-    rep(i, n - 1) {
-        int u, v;
-        cin >> u >> v;
-        graph[u - 1].push_back(v - 1);
-        graph[v - 1].push_back(u - 1);
-    }
 
-    function<vector<ll>(int, int)> dfs = [&](int cur, int fa) -> vector<ll> {
-        vector<ll> ans(2, 0);
-        for (auto& nxt: graph[cur]) {
-            if (nxt == fa) continue;
-            auto res = dfs(nxt, cur);
-            ans[0] += max(res[0] + abs(nodes[cur][0] - nodes[nxt][0]), res[1] + abs(nodes[cur][0] - nodes[nxt][1]));
-            ans[1] += max(res[0] + abs(nodes[cur][1] - nodes[nxt][0]), res[1] + abs(nodes[cur][1] - nodes[nxt][1]));
-        }
-        return ans;
-    };
-    vector<ll> ans = dfs(0, -1);
-    cout << max(ans[0], ans[1]) << endl;
 }
 
 int main() {
