@@ -57,22 +57,22 @@ void solve() {
             if (nxt == fa) continue;
             cnt += dfs1(nxt, node, d + 1);
         }
-        sz[node] = cnt + 1;
-        return sz[node];
+        sz[node] = cnt;
+        return sz[node] + 1;
     };
     dfs1(0, -1, 0);
 
     vi idx(n);
     iota(idx.begin(), idx.end(), 0);
-    sort(idx.begin(), idx.end(), [&] (int i, int j) { return depth[i] * sz[j] > depth[j] * sz[i]; });
+    sort(idx.begin(), idx.end(), [&] (int i, int j) { return (depth[i] - sz[i]) > (depth[j] - sz[j]); });
 
     vector<bool> indus(n, false);
     rep(i, k) {
         indus[idx[i]] = true;
     }
 
-    function<vi(int, int)> dfs2 = [&] (int node, int fa) -> vi {
-        vi ans(2, 0);
+    function<vector<ll>(int, int)> dfs2 = [&] (int node, int fa) -> vector<ll> {
+        vector<ll> ans(2, 0);
         for (auto& nxt: graph[node]) {
             if (nxt == fa) continue;
             auto temp = dfs2(nxt, node);
