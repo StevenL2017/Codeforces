@@ -49,18 +49,22 @@ void solve() {
     }
 
     vi depth(n, 0);
-    function<void(int, int, int)> dfs1 = [&] (int node, int fa, int d) {
+    vi sz(n, 0);
+    function<int(int, int, int)> dfs1 = [&] (int node, int fa, int d) -> int {
         depth[node] = d;
+        int cnt = 0;
         for (auto& nxt: graph[node]) {
             if (nxt == fa) continue;
-            dfs1(nxt, node, d + 1);
+            cnt += dfs1(nxt, node, d + 1);
         }
+        sz[node] = cnt + 1;
+        return sz[node];
     };
     dfs1(0, -1, 0);
 
     vi idx(n);
     iota(idx.begin(), idx.end(), 0);
-    sort(idx.begin(), idx.end(), [&] (int i, int j) { return depth[i] > depth[j]; });
+    sort(idx.begin(), idx.end(), [&] (int i, int j) { return depth[i] * sz[j] > depth[j] * sz[i]; });
 
     vector<bool> indus(n, false);
     rep(i, k) {
