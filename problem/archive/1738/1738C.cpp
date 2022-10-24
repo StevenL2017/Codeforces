@@ -38,7 +38,21 @@ const int INF = 2e9 + 7; // const ll INF = 9e18 + 7;
 #define repD(i, a, n)          for (int i = a; i > n; --i)
 
 void solve() {
+    int n; cin >> n;
+    vi a(n);
+    int cnt_even = 0;
+    rep(i, n) {
+        cin >> a[i];
+        if (a[i] % 2 == 0) cnt_even++;
+    }
 
+    int cnt_odd = n - cnt_even;
+    bool ok = true;
+    if ((cnt_odd % 4 == 1) && (cnt_even % 2 == 0)) ok = false;
+    if (cnt_odd % 4 == 2) ok = false;
+
+    if (ok) cout << "Alice\n";
+    else cout << "Bob\n";
 }
 
 int main() {
