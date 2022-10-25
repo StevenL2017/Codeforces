@@ -49,37 +49,22 @@ void solve() {
     sortD(gg);
     sortD(bb);
 
-    int i = 0, j = 0, k = 0, ans = 0;
-    while (i < r || j < g || k < b) {
-        if (i < r && j < g && k < b) {
-            int mn = min(rr[i], min(gg[j], bb[k]));
-            if (rr[i] == mn) {
-                ans += gg[j] * bb[k];
-                j++; k++;
+    int ans = 0;
+    vector<vector<vi>> f(r + 1, vector<vi>(g + 1, vi(b + 1, 0)));
+    rep(i, r + 1) {
+        rep(j, g + 1) {
+            rep(k, b + 1) {
+                if (i > 0 && j > 0) {
+                    f[i][j][k] = max(f[i][j][k], f[i - 1][j - 1][k] + rr[i - 1] * gg[j - 1]);
+                }
+                if (i > 0 && k > 0) {
+                    f[i][j][k] = max(f[i][j][k], f[i - 1][j][k - 1] + rr[i - 1] * bb[k - 1]);
+                }
+                if (j > 0 && k > 0) {
+                    f[i][j][k] = max(f[i][j][k], f[i][j - 1][k - 1] + gg[j - 1] * bb[k - 1]);
+                }
+                ans = max(ans, f[i][j][k]);
             }
-            else if (gg[j] == mn) {
-                ans += rr[i] * bb[k];
-                i++; k++;
-            }
-            else if (bb[k] == mn) {
-                ans += rr[i] * gg[j];
-                i++; j++;
-            }
-        }
-        else if (i < r && j < g) {
-            ans += rr[i] * gg[j];
-            i++; j++;
-        }
-        else if (i < r && k < b) {
-            ans += rr[i] * bb[k];
-            i++; k++;
-        }
-        else if (j < g && k < b) {
-            ans += gg[j] * bb[k];
-            j++; k++;
-        }
-        else {
-            break;
         }
     }
     cout << ans << endl;
