@@ -39,7 +39,29 @@ const ll  INF_LL = 9e18 + 7;
 
 void solve() {
     int n; cin >> n;
-    
+
+    int d = 31;
+    repd(i, 31, -1) {
+        if (n & (1 << i)) {
+            d = i;
+            break;
+        }
+    }
+
+    vi a(d, 0);
+    int diff = n - (1 << d);
+    repa(i, 1, d) {
+        int cur = pow(2, i - 1);
+        a[i] = cur;
+        int delta = min(cur, diff);
+        a[i - 1] += delta;
+        a[i] -= delta;
+        diff -= delta;
+    }
+    a[d - 1] += diff;
+
+    cout << d << endl;
+    out(a);
 }
 
 int main() {
