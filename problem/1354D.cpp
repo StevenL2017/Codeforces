@@ -38,6 +38,9 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    int n, q; cin >> n >> q;
+    vi a(n), k(q); in(a), in(k);
+
 
 }
 
@@ -45,6 +48,6 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) solve();
 }
