@@ -41,7 +41,29 @@ void solve() {
     int n, q; cin >> n >> q;
     vi a(n), k(q); in(a), in(k);
 
+    auto check = [&] (int x) -> bool {
+        int cnt = 0;
+        for (auto& p: a) {
+            if (p <= x) cnt++;
+        }
+        for (auto& p: k) {
+            if (p > 0 && p <= x) cnt++;
+            else if (p < 0 && abs(p) <= cnt) cnt--;
+        }
+        return cnt > 0;
+    };
 
+    int left = 0, right = 1e6 + 1, ans = left;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (check(mid)) {
+            right = mid - 1;
+            ans = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
