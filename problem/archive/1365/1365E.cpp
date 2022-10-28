@@ -40,8 +40,16 @@ const long long INF_LL = 9e18 + 7;
 void solve() {
     int n; cin >> n;
     vector<ll> a(n); in(a);
-
     
+    ll ans = 0;
+    rep(i, n) {
+        repa(j, i, n) {
+            repa(k, j, n) {
+                ans = max(ans, a[i] | a[j] | a[k]);
+            }
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
