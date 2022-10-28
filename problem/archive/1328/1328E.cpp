@@ -47,9 +47,51 @@ void solve() {
         graph[v].push_back(u);
     }
 
+    int t = 0;
+    vi parent(n), depth(n);
+    vi tin(n), tout(n);
+    function<void(int, int, int)> dfs = [&] (int node, int fa, int d) {
+        parent[node] = fa;
+        depth[node] = d;
+        tin[node] = t++;
+        for (auto& nxt: graph[node]) {
+            if (nxt == fa) continue;
+            dfs(nxt, node, d + 1);
+        }
+        tout[node] = t++;
+    };
+    dfs(0, -1, 0);
+
+    function<bool(int, int)> is_parent = [&] (int node, int target) -> bool {
+        return tin[node] <= tin[target] && tout[target] <= tout[node];
+    };
+
     while (m--) {
         int k; cin >> k;
-        vi v(k); in(v);
+        vi v(k);
+        rep(i, k) {
+            cin >> v[i];
+            v[i]--;
+        }
+
+        int deepest = v[0];
+        for (auto& node: v) {
+            if (depth[node] > depth[deepest]) deepest = node;
+        }
+        for (auto& node: v) {
+            if (node != deepest && parent[node] != -1) node = parent[node];
+        }
+
+        bool ok = true;
+        for (auto& node: v) {
+            if (!is_parent(node, deepest)) {
+                ok = false;
+                break;
+            }
+        }
+
+        if (ok) cout << "YES" << endl;
+        else cout << "NO" << endl;
     }
 }
 
