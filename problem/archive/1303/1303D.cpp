@@ -42,7 +42,37 @@ void solve() {
     cin >> n >> m;
     vi a(m); in(a);
 
-    
+    ll tot = 0;
+    vector<int> cnt(64, 0);
+    rep(i, m) {
+        tot += a[i];
+        cnt[__lg(a[i])]++;
+    }
+
+    if (tot < n) {
+        cout << -1 << endl;
+        return;
+    }
+
+    ll ans = 0;
+    int i = 0;
+    while (i < 60) {
+        if (n >> i & 1) {
+            if (cnt[i] > 0) {
+                cnt[i]--;
+            } else {
+                while (i < 60 && cnt[i] == 0) {
+                    i++;
+                    ans++;
+                }
+                cnt[i]--;
+                continue;
+            }
+        }
+        cnt[i + 1] += cnt[i] / 2;
+        i++;
+    }
+    cout << ans << endl;
 }
 
 int main() {
