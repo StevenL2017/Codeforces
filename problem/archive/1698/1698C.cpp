@@ -38,7 +38,39 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    int n; cin >> n;
+    vi a(n); in(a);
 
+    int cnt_pos = 0, cnt_neg = 0, cnt_zero = 0;
+    rep(i, n) {
+        if (a[i] > 0) cnt_pos++;
+        if (a[i] < 0) cnt_neg++;
+        if (a[i] == 0) cnt_zero++;
+        if (cnt_pos >= 3 || cnt_neg >= 3) {
+            cout << "NO\n";
+            return;
+        }
+    }
+
+    vi b;
+    if (cnt_zero > 0) b.push_back(0);
+    rep(i, n) {
+        if (a[i] != 0) b.push_back(a[i]);
+    }
+
+    int m = ssz(b);
+    rep(i, m - 2) {
+        repa(j, i + 1, m - 1) {
+            repa(k, j + 1, m) {
+                int cur = b[i] + b[j] + b[k];
+                if (!count(b.begin(), b.end(), cur)) {
+                    cout << "NO\n";
+                    return;
+                }
+            }
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {
