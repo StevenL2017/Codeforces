@@ -39,12 +39,12 @@ const long long INF_LL = 9e18 + 7;
 
 void solve() {
     int n; cin >> n;
-    vector<vi> graph(n);
+    vector<set<int>> graph(n);
     rep(i, n - 1) {
         int x, y; cin >> x >> y;
         x--; y--;
-        graph[x].push_back(y);
-        graph[y].push_back(x);
+        graph[x].insert(y);
+        graph[y].insert(x);
     }
     vi a(n);
     rep(i, n) {
@@ -53,20 +53,24 @@ void solve() {
     }
 
     queue<int> q;
-    vi visited(n, 0);
+    vector<bool> visited(n, false);
     q.push(0);
-    visited[0] = 1;
+    visited[0] = true;
+    int start = 1;
     while (!q.empty()) {
         int m = ssz(q);
         rep(i, m) {
             auto cur = q.front();
             q.pop();
-            for (auto& nxt: graph[cur]) {
-                if (!visited[nxt]) {
-                    q.push(nxt);
-                    visited[nxt] = 1;
+            for (int j = start; j < start + ssz(graph[cur]) - (cur == 0 ? 0 : 1); j++) {
+                if (graph[cur].find(a[j]) == graph[cur].end() || visited[a[j]]) {
+                    cout << "No\n";
+                    return;
                 }
+                q.push(a[j]);
+                visited[a[j]] = true;
             }
+            start += ssz(graph[cur]) - (cur == 0 ? 0 : 1);
         }
     }
     cout << "Yes\n";
