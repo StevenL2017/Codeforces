@@ -37,17 +37,21 @@ const int MOD = 1e9 + 7;
 const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
+int mat[1005][1005][2];
+int f[1005][1005][2];
+int path[1005][1005][2];
+
 void solve() {
     int n; cin >> n;
     bool has_zero = false;
     int zero_r, zero_c;
-    int mat[1001][1001][2];
     rep(i, n) {
         rep(j, n) {
             int x; cin >> x;
             if (x == 0) {
                 has_zero = true;
-                zero_r = i, zero_c = j;
+                zero_r = i;
+                zero_c = j;
                 mat[i][j][0] = 1;
                 mat[i][j][1] = 1;
                 continue;
@@ -63,8 +67,6 @@ void solve() {
         }
     }
 
-    int f[1001][1001][2];
-    int path[1001][1001][2];
     rep(i, n) {
         rep(j, n) {
             rep(k, 2) {
@@ -91,7 +93,7 @@ void solve() {
     }
 
     int k = f[n - 1][n - 1][0] < f[n - 1][n - 1][1] ? 0 : 1;
-    string s = "";
+    string s;
     if (has_zero && f[n - 1][n - 1][k] > 1) {
         rep(i, zero_r) {
             s += 'D';
