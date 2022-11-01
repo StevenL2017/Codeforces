@@ -41,19 +41,38 @@ void solve() {
     int n, m;
     cin >> n >> m;
     vi a(n), b(n);
+    in(a); in(b);
+
     ll tot = 0;
     rep(i, n) {
-        cin >> a[i];
         tot += a[i];
     }
-    in(b);
-
     if (tot < m) {
         cout << -1 << endl;
         return;
     }
 
-
+    vi one, two;
+    rep(i, n) {
+        if (b[i] == 1) one.push_back(a[i]);
+        else two.push_back(a[i]);
+    }
+    sortd(one); sortd(two);
+    
+    ll s1 = 0;
+    ll s2 = accumulate(two.begin(), two.end(), 0ll);
+    int ans = INF, i = 0, j = ssz(two);
+    while (i <= ssz(one)) {
+        while (j - 1 >= 0 && s1 + s2 - two[j - 1] >= m) {
+            s2 -= two[j - 1];
+            j--;
+        }
+        if (s1 + s2 >= m) ans = min(ans, i + j * 2);
+        if (i == ssz(one)) break;
+        s1 += one[i];
+        i++;
+    }
+    cout << ans << endl;
 }
 
 int main() {
