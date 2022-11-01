@@ -42,7 +42,13 @@ void solve() {
     vector<vi> mat(n, vi(m));
     rep(i, n) in(mat[i]);
 
-    
+    rep(i, n) {
+        rep(j, m) {
+            if ((mat[i][j] % 2) != ((i + j) % 2)) mat[i][j]++;
+        }
+    }
+
+    rep(i, n) out(mat[i]);
 }
 
 int main() {
