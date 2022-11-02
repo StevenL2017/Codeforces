@@ -39,6 +39,27 @@ const long long INF_LL = 9e18 + 7;
 
 void solve() {
     ll u, v; cin >> u >> v;
+
+    if (u == 0 && v == 0) {
+        cout << 0 << endl;
+    } else {
+        if (v - u < 0 || (v - u) % 2 == 1) {
+            cout << -1 << endl;
+        } else {
+            auto x = (v - u) / 2;
+            if (x == 0) {
+                cout << 1 << endl << u << endl;
+            } else {
+                if (x & u) {
+                    cout << 3 << endl;
+                    cout << u << " " << x << " " << x << endl;
+                } else {
+                    cout << 2 << endl;
+                    cout << u + x << " " << x << endl;
+                }
+            }
+        }
+    }
 }
 
 int main() {
