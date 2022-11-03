@@ -41,7 +41,40 @@ void solve() {
     int n, k; cin >> n >> k;
     vi a(n); in(a);
 
-    
+    auto check = [&] (int x) {
+        int odd = 0, even = 0;
+        rep(i, n) {
+            if (odd & 1) {
+                odd++;
+            } else {
+                if (a[i] <= x) {
+                    odd++;
+                }
+            }
+            if (!(even & 1)) {
+                even++;
+            } else {
+                if (a[i] <= x) {
+                    even++;
+                }
+            }
+        }
+        return max(odd, even) >= k;
+    };
+
+    int left = *min_element(a.begin(), a.end());
+    int right = *max_element(a.begin(), a.end());
+    int ans = right;
+    while (left <= right) {
+        auto mid = left + (right - left) / 2;
+        if (check(mid)) {
+            right = mid - 1;
+            ans = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    cout << ans << endl;
 }
 
 int main() {
