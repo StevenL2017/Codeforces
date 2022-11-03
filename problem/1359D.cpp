@@ -34,14 +34,24 @@ template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
 const int MOD = 1e9 + 7;
-const int INF = 2e9 + 7;
+const int INF = 1e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
     int n; cin >> n;
     vi a(n); in(a);
 
-    
+    int ans = 0;
+    rep(mx, 31) {
+        int f = 0, best = 0;
+        rep(i, n) {
+            int cur = a[i] <= mx ? a[i] : -INF;
+            f = max(f + cur, cur);
+            best = max(best, f);
+        }
+        ans = max(ans, best - mx);
+    }
+    cout << ans << endl;
 }
 
 int main() {
