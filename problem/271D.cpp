@@ -38,7 +38,10 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    string s, t; int k;
+    cin >> s >> t >> k;
 
+    int n = ssz(s);
 }
 
 int main() {
