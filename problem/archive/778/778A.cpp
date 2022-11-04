@@ -38,7 +38,37 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    string t, p;
+    cin >> t >> p;
+    int n = ssz(t);
+    vi a(n); in(a);
 
+    auto check = [&] (int x) -> bool {
+        set<int> deleted;
+        rep(i, x) {
+            deleted.insert(a[i] - 1);
+        }
+        int j = 0;
+        rep(i, n) {
+            if (deleted.count(i)) continue;
+            if (t[i] == p[j]) j++;
+            if (j == ssz(p)) return true;
+        }
+        return false;
+    };
+
+    int left = 0, right = n, ans = left;
+    while (left <= right) {
+        auto mid = left + (right - left) / 2;
+        if (check(mid)) {
+            left = mid + 1;
+            ans = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
