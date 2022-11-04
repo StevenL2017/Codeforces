@@ -47,18 +47,19 @@ void solve() {
         pre[i + 1] = pre[i] + (t[s[i] - 'a'] == '0' ? 1 : 0);
     }
 
-    set<string> ans;
+    int ans = 0;
+    set<string> ss;
     rep(i, n) {
-        string cur;
-        repa(j, i, n) {
-            cur += s[j];
-            if (pre[j + 1] - pre[i] <= k) {
-                ans.insert(cur);
+        ss.clear();
+        rep(j, n - i) {
+            if (pre[j + i + 1] - pre[j] <= k) {
+                ss.insert(string(s, j, i + 1));
             }
         }
+        ans += ssz(ss);
     }
     
-    cout << ssz(ans) << endl;
+    cout << ans << endl;
 }
 
 int main() {
