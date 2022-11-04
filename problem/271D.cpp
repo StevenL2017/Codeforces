@@ -42,6 +42,23 @@ void solve() {
     cin >> s >> t >> k;
 
     int n = ssz(s);
+    vi pre(n + 1, 0);
+    rep(i, n) {
+        pre[i + 1] = pre[i] + (t[s[i] - 'a'] == '0' ? 1 : 0);
+    }
+
+    set<string> ans;
+    rep(i, n) {
+        string cur;
+        repa(j, i, n) {
+            cur += s[j];
+            if (pre[j + 1] - pre[i] <= k) {
+                ans.insert(cur);
+            }
+        }
+    }
+    
+    cout << ssz(ans) << endl;
 }
 
 int main() {
