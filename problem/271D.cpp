@@ -37,6 +37,44 @@ const int MOD = 1e9 + 7;
 const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
+class Trie {
+public:
+    vector<Trie*> children;
+    bool isEnd;
+
+public:
+    Trie() : children(26), isEnd(false) {}
+
+    void insert(string word) {
+        Trie* node = this;
+        for (char ch : word) {
+            ch -= 'a';
+            if (node->children[ch] == nullptr) {
+                node->children[ch] = new Trie();
+            }
+            node = node->children[ch];
+        }
+        node->isEnd = true;
+    }
+
+    bool query(string word) {
+        Trie* node = this->query_prefix(word);
+        return node != nullptr && node->isEnd;
+    }
+
+    Trie* query_prefix(string prefix) {
+        Trie* node = this;
+        for (char ch : prefix) {
+            ch -= 'a';
+            if (node->children[ch] == nullptr) {
+                return nullptr;
+            }
+            node = node->children[ch];
+        }
+        return node;
+    }
+};
+
 void solve() {
     string s, t; int k;
     cin >> s >> t >> k;
@@ -48,15 +86,21 @@ void solve() {
     }
 
     int ans = 0;
-    set<string> ss;
+    Trie tree;
     rep(i, n) {
-        ss.clear();
-        rep(j, n - i) {
-            if (pre[j + i + 1] - pre[j] <= k) {
-                ss.insert(string(s, j, i + 1));
+        Trie* node = &tree;
+        repa(j, i, n) {
+            if (pre[j + 1] - pre[i] <= k) {
+                auto ch = s[j] - 'a';
+                if (node->children[ch] == nullptr) {
+                    node->children[ch] = new Trie();
+                    ans++;
+                }
+                node = node->children[ch];
+            } else {
+                break;
             }
         }
-        ans += ssz(ss);
     }
     
     cout << ans << endl;
