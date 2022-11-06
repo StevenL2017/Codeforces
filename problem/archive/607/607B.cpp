@@ -40,6 +40,28 @@ const long long INF_LL = 9e18 + 7;
 void solve() {
     int n; cin >> n;
     vi c(n); in(c);
+
+    vector<vi> f(n, vi(n, INF));
+    repd(i, n - 1, -1) {
+        repa(j, i, n) {
+            if (i == j) {
+                f[i][j] = 1;
+                continue;
+            }
+            if (i + 1 == j) {
+                f[i][j] = (c[i] == c[j] ? 1 : 2);
+                continue;
+            }
+            repa(k, i, j) {
+                f[i][j] = min(f[i][j], f[i][k] + f[k + 1][j]);
+            }
+            if (c[i] == c[j]) {
+                f[i][j] = min(f[i][j], f[i + 1][j - 1]);
+            }
+        }
+    }
+
+    cout << f[0][n - 1] << endl;
 }
 
 int main() {
