@@ -41,7 +41,28 @@ void solve() {
     int n, k; cin >> n >> k;
     vi a(n); in(a);
 
-    
+    int eq = 0;
+    rep(i, n) {
+        if (a[i] == k) eq++;
+    }
+    if (eq == 0) {
+        cout << "no\n";
+        return;
+    }
+    if (n == 1) {
+        cout << "yes\n";
+        return;
+    }
+
+    rep(i, n - 1) {
+        repa(j, i + 1, min(n, i + 3)) {
+            if (a[i] >= k && a[j] >= k) {
+                cout << "yes\n";
+                return;
+            }
+        }
+    }
+    cout << "no\n";
 }
 
 int main() {
