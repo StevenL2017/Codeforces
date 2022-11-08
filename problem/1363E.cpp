@@ -38,13 +38,24 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    int n; cin >> n;
+    vi a(n), b(n), c(n);
+    rep(i, n) cin >> a[i] >> b[i] >> c[i];
+    vector<vi> graph(n);
+    rep(i, n - 1) {
+        int u, v; cin >> u >> v;
+        u--; v--;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
 
+    
 }
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) solve();
 }
