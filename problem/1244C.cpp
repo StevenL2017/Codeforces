@@ -41,7 +41,16 @@ void solve() {
     ll n, p, w, d;
     cin >> n >> p >> w >> d;
 
-    
+    for (ll y = 0; y < w; y++) {
+        if ((p - y * d) % w == 0) {
+            auto x = (p - y * d) / w;
+            if (x >= 0 && n - x - y >= 0) {
+                cout << x << " " << y << " " << n - x - y << endl;
+                return;
+            }
+        }
+    }
+    cout << -1 << endl;
 }
 
 int main() {
