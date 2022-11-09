@@ -59,41 +59,30 @@ void solve() {
         return;
     }
 
-    // min cost, cnt of 1 0, cnt of 0 1
-    function<vector<ll>(int, int)> dfs = [&] (int node, int fa) -> vector<ll> {
-        vector<ll> ans(3, 0);
-        ans[0] = INF_LL;
-        ll cost = 0;
+    ll ans = 0;
+    function<vi(int, int, int)> dfs = [&] (int node, int fa, int mn) -> vi {
+        // cnt of 1 0, cnt of 0 1
+        vi cnt(2, 0);
         for (auto& nxt: graph[node]) {
             if (nxt == fa) continue;
-            auto temp = dfs(nxt, node);
-            cost += temp[0];
-            ans[1] += temp[1];
-            ans[2] += temp[2];
+            auto temp = dfs(nxt, node, min(mn, a[node]));
+            cnt[0] += temp[0];
+            cnt[1] += temp[1];
         }
+        if (b[node] && !c[node]) cnt[0]++;
+        if (!b[node] && c[node]) cnt[1]++;
 
-        if (b[node] == 1 && c[node] == 0 && ans[1] < ans[2]) {
-            ans[0] = min(ans[0], cost + 2 * a[node]);
+        if (a[node] < mn) {
+            int c = min(cnt[0], cnt[1]);
+            ans += 1ll * c * 2 * a[node];
+            cnt[0] -= c;
+            cnt[1] -= c;
         }
-        else if (b[node] == 0 && c[node] == 1 && ans[1] > ans[2]) {
-            ans[0] = min(ans[0], cost + 2 * a[node]);
-        }
-        else {
-            ans[0] = min(ans[0], cost);
-        }
-
-        if (b[node] == 1 && c[node] == 0) {
-            ans[1]++;
-        }
-        else if (b[node] == 0 && c[node] == 1) {
-            ans[2]++;
-        }
-        ans[0] = min(ans[0], min(ans[1], ans[2]) * 2 * a[node]);
-        return ans;
+        return cnt;
     };
+    dfs(0, -1, INF);
 
-    auto res = dfs(0, -1);
-    cout << res[0] << endl;
+    cout << ans << endl;
 }
 
 int main() {
