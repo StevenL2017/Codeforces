@@ -42,7 +42,40 @@ void solve() {
     vector<vi> a(n, vi(m));
     rep(i, n) in(a[i]);
 
-    
+    auto check = [&] (int x) -> pair<int, int> {
+        map<int, int> mp;
+        rep(i, n) {
+            int mask = 0;
+            rep(j, m) {
+                if (a[i][j] >= x) mask |= 1 << j;
+            }
+            mp[mask] = i;
+        }
+
+        for (auto& [mask1, i]: mp) {
+            for (auto& [mask2, j]: mp) {
+                if ((mask1 | mask2) == ((1 << m) - 1)) {
+                    return {i, j};
+                }
+            }
+        }
+        return {-1, -1};
+    };
+
+    int left = 0, right = 1e9;
+    int i = -1, j = -1;
+    while (left <= right) {
+        auto mid = left + (right - left) / 2;
+        auto temp = check(mid);
+        if (temp.first != -1 && temp.second != -1) {
+            left = mid + 1;
+            i = temp.first;
+            j = temp.second;
+        } else {
+            right = mid - 1;
+        }
+    }
+    cout << i + 1 << " " << j + 1 << endl;
 }
 
 int main() {
