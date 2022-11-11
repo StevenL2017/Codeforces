@@ -41,7 +41,36 @@ void solve() {
     int n, k; cin >> n >> k;
     vi a(n); in(a);
 
-    
+    auto check = [&] (int x) -> bool {
+        vi b(n, -1);
+        rep(i, n) {
+            if (a[i] >= x) b[i] = 1;
+        }
+
+        vi pre(n + 1, 0), minp(n + 1, 0);
+        rep(i, n) {
+            pre[i + 1] = pre[i] + b[i];
+            minp[i + 1] = min(minp[i], pre[i + 1]);
+        }
+
+        repa(i, k, n + 1) {
+            if (pre[i] - minp[i - k] > 0) return true;
+        }
+        return false;
+    };
+
+    int left = 1, right = n, ans = left;
+    while (left <= right) {
+        auto mid = left + (right - left) / 2;
+        if (check(mid)) {
+            left = mid + 1;
+            ans = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
