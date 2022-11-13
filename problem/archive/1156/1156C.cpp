@@ -42,6 +42,28 @@ void solve() {
     vi a(n); in(a);
 
     sorta(a);
+    
+    auto check = [&] (int x) -> bool {
+        rep(i, x) {
+            if (a[n - x + i] - a[i] < z) {
+                return false;
+            }
+        }
+        return true;
+    };
+    
+    int left = 0, right = n / 2, ans = left;
+    while (left <= right) {
+        auto mid = left + (right - left) / 2;
+        if (check(mid)) {
+            left = mid + 1;
+            ans = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
