@@ -40,7 +40,7 @@ const long long INF_LL = 9e18 + 7;
 const int MAXN = 2e7 + 3;
 
 int mn_prime[MAXN]; // min prime factor
-ll cnt_prime[MAXN];
+int cnt_prime[MAXN];
 
 void eratosthenes_mn(int n) {
     mn_prime[0] = mn_prime[1] = 1;
@@ -49,7 +49,7 @@ void eratosthenes_mn(int n) {
     }
     for (int i = 2; i <= n; i++) {
         if (mn_prime[i] == n + 1) {
-            mn_prime[i] = 1;
+            mn_prime[i] = i;
             for (int j = i + i; j <= n; j += i) {
                 mn_prime[j] = min(mn_prime[j], i);
             }
@@ -57,19 +57,16 @@ void eratosthenes_mn(int n) {
     }
 }
 
-long long count_prime_factors(int x) {
-    long long ans = 1, y = mn_prime[x];
-    while (y != 1) {
-        x /= y;
-        y = mn_prime[x];
-        ans++;
+void count_different_prime_factors(int n) {
+    for (int i = 2; i < n; i++) {
+        int j = i / mn_prime[i];
+        cnt_prime[i] = cnt_prime[j] + (mn_prime[j] != mn_prime[i]);
     }
-    return ans;
 }
 
 void pre_calc() {
     eratosthenes_mn(MAXN);
-    repa(i, 1, MAXN) cnt_prime[i] = count_prime_factors(i);
+    count_different_prime_factors(MAXN);
 }
 
 void solve() {
