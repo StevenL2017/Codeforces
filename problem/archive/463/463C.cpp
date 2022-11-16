@@ -49,36 +49,30 @@ void solve() {
             right[i - j] += mat[i][j];
         }
     }
-    
-    vector<vector<ll>> val(2, vector<ll>(2, -INF_LL));
-    vector<vector<pair<int, int>>> idx(2, vector<pair<int, int>>(2));
+
+    ll mx1 = -INF_LL, mx2 = -INF_LL;
+    int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
     rep(i, n) {
         rep(j, n) {
-            auto v = left[i + j] + right[i - j] - mat[i][j];
-            if (v > val[(i + j) % 2][abs(i - j) % 2]) {
-                val[(i + j) % 2][abs(i - j) % 2] = v;
-                idx[(i + j) % 2][abs(i - j) % 2] = {i + 1, j + 1};
+            auto l = i + j, r = i - j;
+            auto v = left[l] + right[r] - mat[i][j];
+            if (l & 1) {
+                if (v > mx1) {
+                    mx1 = v;
+                    x1 = i + 1;
+                    y1 = j + 1;
+                }
+            } else {
+                if (v > mx2) {
+                    mx2 = v;
+                    x2 = i + 1;
+                    y2 = j + 1;
+                }
             }
         }
     }
 
-    ll mx = -INF_LL;
-    int x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-    rep(i, 2) {
-        rep(j, 2) {
-            auto l1 = i, r1 = j, l2 = i ^ 1, r2 = j ^ 1;
-            auto v = val[l1][r1] + val[l2][r2];
-            if (v > mx) {
-                mx = v;
-                x1 = idx[l1][r1].first;
-                y1 = idx[l1][r1].second;
-                x2 = idx[l2][r2].first;
-                y2 = idx[l2][r2].second;
-            }
-        }
-    }
-
-    cout << mx << endl;
+    cout << mx1 + mx2 << endl;
     cout << x1 << " " << y1 << " " << x2 << " " << y2 << endl;
 }
 
