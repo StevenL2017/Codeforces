@@ -39,14 +39,43 @@ const long long INF_LL = 9e18 + 7;
 
 void solve() {
     int n, m; cin >> n >> m;
-    vector<pair<int, int>> d;
+    vector<set<int>> g(n);
     rep(i, m) {
         int u, v; cin >> u >> v;
         u--; v--;
-        d.emplace_back(u, v);
+        g[u].insert(v);
+        g[v].insert(u);
     }
 
-    
+    set<int> unvisited;
+    rep(i, n) unvisited.insert(i);
+
+    vi ans;
+    int cnt = 0;
+    function<void(int)> dfs = [&] (int node) {
+        unvisited.erase(node);
+        ans[cnt]++;
+        int cur = -1;
+        while (true) {
+            auto it = unvisited.upper_bound(cur);
+            if (it == unvisited.end()) break;
+            cur = *it;
+            if (g[node].count(cur)) continue;
+            dfs(cur);
+        }
+    };
+
+    rep(i, n) {
+        if (unvisited.count(i)) {
+            ans.push_back(0);
+            dfs(i);
+            cnt++;
+        }
+    }
+
+    sorta(ans);
+    cout << cnt << endl;
+    out(ans);
 }
 
 int main() {
