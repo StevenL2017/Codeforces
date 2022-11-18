@@ -46,35 +46,26 @@ void solve() {
         tot += h[i];
     }
 
+    m = min(m, a + r);
     sorta(h);
-    ll ans = min((h[n - 1] * n - tot) * a, (tot - h[0] * n) * r);
-    ll pre = 0, suf = tot;
-    rep(i, n) {
-        auto k = m - a - r;
-        auto b = (h[i] * i - pre) * a + (suf - h[i] * (n - i)) * r;
-        ll x = 0;
-        if (k < 0) {
-            x = min(h[i] * i - pre, suf - h[i] * (n - i));
-        }
-        ans = min(ans, k * x + b);
-        pre += h[i];
-        suf -= h[i];
-    }
+    vector<ll> pre(n + 1, 0);
+    rep(i, n) pre[i + 1] = pre[i] + h[i];
 
-    auto target = tot / n;
-    auto mod = tot % n;
-    ll d = 0;
-    rep(i, n - mod) {
-        d += abs(target - h[i]);
+    auto calc = [&] (ll target) -> ll {
+        ll ans = INF_LL;
+        auto idx = upper_bound(h.begin(), h.end(), target) - h.begin();
+        auto s1 = target * idx - pre[idx], s2 = tot - pre[idx] - target * (n - idx);
+        if (s1 >= s2) ans = min(ans, s2 * m + (s1 - s2) * a);
+        else ans = min(ans, s1 * m + (s2 - s1) * r);
+        return ans;
+    };
+    
+    ll ans = INF_LL;
+    rep(i, n) {
+        ans = min(ans, calc(h[i]));
     }
-    repa(i, n - mod, n) {
-        d += abs(target + 1 - h[i]);
-    }
-    if (!mod) {
-        ans = min(ans, d / 2 * m);
-    } else {
-        ans = min(ans, d / 2 * m + min((n - mod) * a, mod * r));
-    }
+    ans = min(ans, calc(tot / n));
+    ans = min(ans, calc((tot + n - 1) / n));
 
     cout << ans << endl;
 }
