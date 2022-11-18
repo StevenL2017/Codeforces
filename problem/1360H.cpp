@@ -38,7 +38,10 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    int n, m; cin >> n >> m;
+    vector<string> a(n); in(a);
 
+    
 }
 
 int main() {
