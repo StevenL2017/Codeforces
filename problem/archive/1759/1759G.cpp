@@ -41,7 +41,35 @@ void solve() {
     int n; cin >> n;
     vi b(n / 2); in(b);
 
-    
+    set<int> s;
+    rep(i, n) {
+        s.insert(i + 1);
+    }
+
+    for (auto& x: b) {
+        if (!s.count(x)) {
+            cout << -1 << endl;
+            return;
+        }
+        s.erase(x);
+    }
+
+    vi a(n / 2);
+    repd(i, n / 2 - 1, -1) {
+        auto it = s.upper_bound(b[i]);
+        if (it == s.begin()) {
+            cout << -1 << endl;
+            return;
+        }
+        it--;
+        a[i] = *it;
+        s.erase(it);
+    }
+
+    rep(i, n / 2) {
+        cout << a[i] << " " << b[i] << " ";
+    }
+    cout << endl;
 }
 
 int main() {
