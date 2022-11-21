@@ -38,7 +38,23 @@ const int INF = 2e9 + 7;
 const long long INF_LL = 9e18 + 7;
 
 void solve() {
+    int n; cin >> n;
+    vi a(n); in(a);
 
+    function<int(int, int, int)> calc = [&] (int left, int right, int h) -> int {
+        if (left > right) return 0;
+        int m = left, mn = a[left];
+        repa(i, left, right + 1) {
+            if (a[i] < mn) {
+                mn = a[i];
+                m = i;
+            }
+        }
+        int ans = min(right - left + 1, calc(left, m - 1, mn) + calc(m + 1, right, mn) + mn - h);
+        return ans;
+    };
+
+    cout << calc(0, n - 1, 0) << endl;
 }
 
 int main() {
