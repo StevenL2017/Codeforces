@@ -49,38 +49,27 @@ void solve() {
     }
 
     vector<char> ans(n);
-    bool valid = true;
-    function<pair<char, char>(int, int)> dfs = [&] (int node, int fa) -> pair<char, char> {
-        vi cnt(26, 0);
-        char top = 'Z', bot = 'A';
+    vector<vi> cnt(n, vi(26, 0));
+    function<void(int, int)> dfs = [&] (int node, int fa) {
         for (auto& nxt: graph[node]) {
             if (nxt == fa) continue;
-            auto [mx, mn] = dfs(nxt, node);
-            cnt[mx - 'A']++;
-            top = min(top, mx);
-            bot = max(bot, mn);
+            dfs(nxt, node);
         }
-        if (cnt[0] > 1) {
-            valid = false;
-            return {'A', 'A'};
+        int p = -1;
+        for (int i = 0; i < 26 && cnt[node][i] < 2; i++) {
+            if (!cnt[node][i]) {
+                p = i;
+            }
         }
-        if (cnt[top - 'A'] > 1 || bot == 'Z') {
-            ans[node] = (char)(top - 1);
-            return {ans[node], ans[node]};
-        } else if (cnt[top - 'A'] > 0) {
-            ans[node] = (char)(bot + 1);
-            return {top, ans[node]};
-        } else {
-            ans[node] = 'Z';
-            return {ans[node], ans[node]};
+        ans[node] = p + 'A';
+        cnt[node][p] = 1;
+        if (node == 0) return;
+        for (int i = 0; i <= p; i++) {
+            cnt[fa][i] += cnt[node][i];
         }
     };
     dfs(0, -1);
 
-    if (!valid) {
-        cout << "Impossible!" << endl;
-        return;
-    }
     out(ans);
 }
 
