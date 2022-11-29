@@ -92,6 +92,10 @@ struct Edge {
     }
 };
 
+// 建图（树）
+vector<int> graph[MAXN];
+vector<int> weight[MAXN];
+
 // Kruskal算法
 int mst_edges[MAXN];
 long long kruskal(int n, vector<Edge> edges) {
@@ -104,14 +108,14 @@ long long kruskal(int n, vector<Edge> edges) {
             uf.merge(u, v);
             value += w;
             mst_edges[i] = 1;
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+            weight[u].push_back(w);
+            weight[v].push_back(w);
         }
     }
     return value;
 }
-
-// 建图
-vector<int> graph[MAXN];
-vector<int> weight[MAXN];
 
 // 深度 depth，祖先 f，代价 cost
 int depth[MAXN];
@@ -169,10 +173,6 @@ void solve() {
         int u, v, w;
         cin >> u >> v >> w;
         edges.push_back({u, v, w, i});
-        graph[u].push_back(v);
-        graph[v].push_back(u);
-        weight[u].push_back(w);
-        weight[v].push_back(w);
     }
 
     auto s = kruskal(n + 1, edges);
