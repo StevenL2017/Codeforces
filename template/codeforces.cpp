@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <climits>
 #include <cmath>
 #include <cstring>
 #include <string>
@@ -14,7 +15,6 @@
 #include <numeric>
 #include <algorithm>
 #include <functional>
-#include <random>
 
 using namespace std;
 
@@ -32,10 +32,6 @@ using namespace std;
 #define endl '\n'
 template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
-
-const int MOD = 1e9 + 7;
-const int INF = 2e9 + 7;
-const long long INF_LL = 9e18 + 7;
 
 void solve() {
 
