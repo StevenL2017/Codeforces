@@ -44,7 +44,7 @@ void eratosthenes_mn(int n) {
     }
     for (int i = 2; i <= n; i++) {
         if (mn_prime[i] == n + 1) {
-            mn_prime[i] = 1;
+            mn_prime[i] = i;
             for (int j = i + i; j <= n; j += i) {
                 mn_prime[j] = min(mn_prime[j], i);
             }
@@ -72,12 +72,11 @@ void solve() {
     }
  
     auto d = y - x;
-    int ans = d - x % d, z = mn_prime[d];
-    while (z != 1) {
-        ans = min(ans, z - x % z);
+    int ans = 1e9;
+    while (d > 1) {
+        auto z = mn_prime[d];
         d /= z;
-        z = mn_prime[d];
-        ans = min(ans, d - x % d);
+        ans = min(ans, (z - x % z) % z);
     }
     cout << ans << endl;
 }
