@@ -33,28 +33,53 @@ using namespace std;
 template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
+const int MOD = 1e9 + 7;
+
+int add(int x, int y) {
+    x += y;
+    while (x >= MOD) x -= MOD;
+    while (x < 0) x += MOD;
+    return x;
+}   
+
+int sub(int x, int y) {
+    return add(x, -y);
+}   
+
+int mul(int x, int y) {
+    return (x * 1ll * y) % MOD;
+}
+
+int binpow(int x, int y) {
+    int z = 1;
+    while (y)
+    {
+        if (y & 1) z = mul(z, x);
+        x = mul(x, x);
+        y >>= 1;
+    }
+    return z;
+}
+
+int inv(int x) {
+	return binpow(x, MOD - 2);
+}
+
+int divide(int x, int y) {
+	return mul(x, inv(y));
+}
+
 void solve() {
     int n; cin >> n;
-    vi a(n); in(a);
 
-    vi ss;
-    for (int j = 0; j * j <= n * 2; j++) {
-        ss.push_back(j * j);
-    }
+    ll ans = divide(mul(mul(n, n + 1), 2 * n + 1), 6);
+    n--;
+    ans += divide(mul(mul(n, n + 1), 2 * n + 1), 6);
+    ans %= MOD;
+    ans += divide(mul(n, n + 1), 2);
+    ans %= MOD;
 
-    int ans = 0, pre = 0;
-    map<int, int> cnt;
-    cnt[0] = 1;
-    rep(i, n) {
-        pre ^= a[i];
-        ans += i + 1;
-        for (auto& s: ss) {
-            if (cnt.find(pre ^ s) != cnt.end()) ans -= cnt[pre ^ s];
-        }
-        cnt[pre]++;
-    }
-
-    cout << ans << endl;
+    cout << mul(ans, 2022) << endl;
 }
 
 int main() {

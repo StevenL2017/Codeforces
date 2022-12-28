@@ -33,55 +33,46 @@ using namespace std;
 template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
-const int MOD = 1e9 + 7;
-
-int add(int x, int y) {
-    x += y;
-    while (x >= MOD) x -= MOD;
-    while (x < 0) x += MOD;
-    return x;
-}   
-
-int sub(int x, int y) {
-    return add(x, -y);
-}   
-
-int mul(int x, int y) {
-    return (x * 1ll * y) % MOD;
-}
-
-int binpow(int x, int y) {
-    int z = 1;
-    while (y)
-    {
-        if (y & 1) z = mul(z, x);
-        x = mul(x, x);
-        y >>= 1;
-    }
-    return z;
-}
-
-int inv(int x) {
-	return binpow(x, MOD - 2);
-}
-
-int divide(int x, int y) {
-	return mul(x, inv(y));
-}
-
 void solve() {
-    int n; cin >> n;
+    int n, m; cin >> n >> m;
+    vector<vi> a(n, vi(m));
+    rep(i, n) in(a[i]);
 
-    ll ans = 0;
-    ans += divide(mul(mul(n, n + 1), 2 * n + 1), 6);
-    ans %= MOD;
-    n--;
-    ans += divide(mul(mul(n, n + 1), 2 * n + 1), 6);
-    ans %= MOD;
-    ans += divide(mul(n, n + 1), 2);
-    ans %= MOD;
+    auto check = [&] (int x) -> bool {
+        vector<vi> b(n, vi(m, 0));
+        rep(i, n) {
+            rep(j, m) {
+                if (a[i][j] >= x) b[i][j] = 1;
+            }
+        }
 
-    cout << (ans * 2022ll) % MOD << endl;
+        vector<vi> pre(n + 1, vi(m + 1, 0));
+        rep(i, n) {
+            rep(j, m) {
+                pre[i + 1][j + 1] = pre[i + 1][j] + pre[i][j + 1] - pre[i][j] + b[i][j];
+            }
+        }
+
+        repa(i, x, n + 1) {
+            repa(j, x, m + 1) {
+                if (pre[i][j] - pre[i - x][j] - pre[i][j - x] + pre[i - x][j - x] == x * x) return true;
+            }
+        }
+        return false;
+    };
+
+    int left = 1, right = n, ans = left;
+    while (left <= right) {
+        auto mid = left + (right - left) / 2;
+        if (check(mid)) {
+            left = mid + 1;
+            ans = mid;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
