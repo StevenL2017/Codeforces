@@ -36,6 +36,24 @@ template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] <<
 void solve() {
     int n; string s;
     cin >> n >> s;
+
+    vi cnt(26, 0), ans(n, 1);
+    rep(i, n) {
+        int cur = 1;
+        repa(j, s[i] - 'a' + 1, 26) {
+            cur = max(cur, cnt[j] + 1);
+        }
+        cnt[s[i] - 'a'] = max(cnt[s[i] - 'a'], cur);
+        ans[i] = cur;
+    }
+
+    int c = *max_element(cnt.begin(), cnt.end());
+    if (c > 2) cout << "NO\n";
+    else {
+        cout << "YES\n";
+        for (auto& x: ans) cout << x - 1;
+    }
+    cout << endl;
 }
 
 int main() {
