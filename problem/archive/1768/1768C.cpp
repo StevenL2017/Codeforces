@@ -37,7 +37,38 @@ void solve() {
     int n; cin >> n;
     vi a(n); in(a);
 
-    
+    vector<vi> idx(n + 1);
+    rep(i, n) {
+        idx[a[i]].push_back(i);
+        if (ssz(idx[a[i]]) > 2) {
+            cout << "NO\n";
+            return;
+        }
+    }
+
+    vi a0;
+    repd(i, n, 0) {
+        if (ssz(idx[i]) == 0) a0.push_back(i);
+    }
+
+    vi p(n, 0), q(n, 0);
+    for (int i = n, j = 0; i > 0; i--) {
+        int m = ssz(idx[i]);
+        if (m == 1) {
+            p[idx[i][0]] = q[idx[i][0]] = i;
+        }
+        else if (m == 2) {
+            p[idx[i][0]] = q[idx[i][1]] = i;
+            if (a0[j] >= i) {
+                cout << "NO\n";
+                return;
+            }
+            p[idx[i][1]] = q[idx[i][0]] = a0[j++];
+        }
+    }
+
+    cout << "YES\n";
+    out(p); out(q);
 }
 
 int main() {
