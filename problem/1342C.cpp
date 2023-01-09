@@ -37,16 +37,22 @@ void solve() {
     ll a, b, q;
     cin >> a >> b >> q;
 
-    if (a > b) swap(a, b);
+    ll n = a * b;
+    vi pre(n + 1, 0);
+    repa(i, 1, n + 1) {
+        pre[i] = pre[i - 1];
+        if ((i % a) % b != (i % b) % a) pre[i]++;
+    }
+
+    auto calc = [&] (ll x) -> ll {
+        auto cnt = x / n, rem = x % n;
+        return cnt * 1ll * pre[n] + 1ll * pre[rem];
+    };
 
     vector<ll> ans(q, 0);
     rep(i, q) {
         ll l, r; cin >> l >> r;
-        if (b % a != 0 && r >= b) {
-            l = max(l, b);
-            auto cnt = max(0ll, (r - l)) / (a + b);
-            ans[i] = max(0ll, r - l + 1 - cnt);
-        }
+        ans[i] = calc(r) - calc(l - 1);
     }
 
     out(ans);
