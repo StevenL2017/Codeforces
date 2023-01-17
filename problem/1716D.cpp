@@ -38,7 +38,21 @@ const int MOD = 998244353;
 void solve() {
     int n, k; cin >> n >> k;
 
-    
+    vi f(n + 1, 0), ans(n + 1, 0);
+    f[0] = 1;
+    for (int start = 0; start + k <= n; start += k++) {
+        vi s(k);
+        for (int i = start; i <= n; i++) {
+            int cur = f[i];
+            f[i] = s[i % k];
+            s[i % k] += cur;
+            s[i % k] %= MOD;
+            ans[i] += f[i];
+            ans[i] %= MOD;
+        }
+    }
+
+    rep(i, n) cout << ans[i + 1] << " ";
 }
 
 int main() {
