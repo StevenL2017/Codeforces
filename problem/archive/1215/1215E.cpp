@@ -37,7 +37,43 @@ void solve() {
     int n; cin >> n;
     vi a(n); in(a);
 
-    
+    vector<vi> color(20);
+    rep(i, n) {
+        color[a[i] - 1].push_back(i);
+    }
+
+    vector<vector<ll>> cnt(20, vector<ll>(20, 0));
+    rep(i, 20) {
+        rep(j, 20) {
+            if (i == j || color[i].empty() || color[j].empty()) continue;
+            for (int p1 = 0, p2 = 0; p1 < ssz(color[i]); p1++) {
+                while (p2 + 1 < ssz(color[j]) && color[j][p2 + 1] < color[i][p1]) {
+                    p2++;
+                }
+                if (color[j][p2] < color[i][p1]) {
+                    cnt[i][j] += p2 + 1;
+                }
+            }
+        }
+    }
+
+    int m = 1 << 20;
+    vector<ll> f(m, 1e18);
+    f[0] = 0;
+    rep(mask, m) {
+        rep(i, 20) {
+            if (mask >> i & 1) continue;
+            ll c = 0;
+            rep(j, 20) {
+                if (mask >> j & 1) {
+                    c += cnt[j][i];
+                }
+            }
+            f[mask | (1 << i)] = min(f[mask | (1 << i)], f[mask] + c);
+        }
+    }
+
+    cout << f.back() << endl;
 }
 
 int main() {
