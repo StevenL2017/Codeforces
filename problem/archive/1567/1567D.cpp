@@ -34,7 +34,21 @@ template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
 void solve() {
+    int s, n; cin >> s >> n;
 
+    int x = 1;
+    while (s - x * 10 >= n - 1) {
+        x *= 10;
+    }
+
+    repa(i, 1, n) {
+        while (s - x < n - i) {
+            x /= 10;
+        }
+        cout << x << " ";
+        s -= x;
+    }
+    cout << s << endl;
 }
 
 int main() {
