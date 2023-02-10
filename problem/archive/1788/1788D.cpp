@@ -36,9 +36,7 @@ template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] <<
 const int MOD = 1e9 + 7;
 const int MAXN = 3e3 + 3;
 
-int fact[MAXN];
-int inv_[MAXN];
-int c[MAXN][MAXN];
+int pow2[MAXN];
 
 int add(int x, int y) {
     x += y;
@@ -60,15 +58,8 @@ int fastexp(int b, int exp) {
 }
 
 void precompute(int n) {
-    fact[0] = 1;
-    inv_[0] = 1;
-    for (int i = 1; i <= n; i++) {
-        fact[i] = mul(fact[i - 1], i);
-        inv_[i] = fastexp(fact[i], MOD - 2);
-    }
     for (int i = 0; i <= n; i++)
-        for (int j = 0; j <= i; j++)
-            c[i][j] = mul(mul(fact[i], inv_[j]), inv_[i - j]);
+        pow2[i] = fastexp(2, i);
 }
 
 void solve() {
@@ -78,24 +69,13 @@ void solve() {
     precompute(n);
 
     int ans = 0;
-    repa(i, 2, n + 1) {
-        ans = add(ans, c[n][i]);
-    }
-
-    vi cnt(n + 1, 0);
-    rep(i, n + 1) {
-        repa(j, 4, n + 1) {
-            cnt[i] = add(cnt[i], c[i][j - 4]);
-        }
-    }
-
-    repa(i, 2, n - 1) {
-        repa(j, 1, i) {
+    rep(i, n) {
+        rep(j, i) {
             int mid = a[i] - a[j];
-            int left = lower_bound(a.begin(), a.end(), a[j] - mid) - a.begin() - 1;
+            int left = lower_bound(a.begin(), a.end(), a[j] - mid) - a.begin();
             int right = lower_bound(a.begin(), a.end(), a[i] + mid) - a.begin();
-            if (j - left - 1 > 0 && right - i - 1 > 0) {
-                ans = add(ans, mul(mul(j - left - 1, right - i - 1), max(1, cnt[n - (right - left - 1)])));
+            if (n - (right - left) >= 0) {
+                ans = add(ans, pow2[n - (right - left)]);
             }
         }
     }
