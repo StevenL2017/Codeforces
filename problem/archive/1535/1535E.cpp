@@ -33,36 +33,48 @@ using namespace std;
 template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
+const int K = 20;
+
 void solve() {
-    int q, a0, c0;
-    cin >> q >> a0 >> c0;
+    int q; cin >> q;
+    vi a(q + 1, 0), c(q + 1, 0);
+    cin >> a[0] >> c[0];
 
-    map<int, vi> amount, cost;
-    map<int, vector<ll>> money;
-    amount[0] = {a0};
-    cost[0] = {c0};
-    money[0] = {a0 * 1ll * c0};
-    
-    vector<vi> graph(q + 1);
-    vi start(q + 1, 0);
+    vector<vi> f(q + 1, vi(K, 0));
+    rep(j, K) {
+        f[0][j] = 0;
+    }
 
-    auto update = [&] (int u) {
-        for (auto& v: graph[u]) {
-            start[v]++;
-        }
-    };
-
-    rep(i, q) {
+    repa(i, 1, q + 1) {
         int op; cin >> op;
         if (op == 1) {
-            int p, a, c;
-            cin >> p >> a >> c;
+            int p;
+            cin >> p >> a[i] >> c[i];
 
-            graph[p].push_back(i + 1);
-            start[i + 1] = start[p];
-            
+            f[i][0] = p;
+            repa(j, 1, K) {
+                f[i][j] = f[f[i][j - 1]][j - 1];
+            }
         } else {
+            int v, w; cin >> v >> w;
 
+            vector<ll> ans(2, 0);
+            while (w > 0 && a[v] > 0) {
+                int u = v;
+                repd(j, K - 1, -1) {
+                    if (a[f[u][j]] > 0) {
+                        u = f[u][j];
+                    }
+                }
+                auto mn = min(w, a[u]);
+                w -= mn;
+                a[u] -= mn;
+                ans[0] += mn;
+                ans[1] += mn * 1ll * c[u];
+            }
+
+            out(ans);
+            cout.flush();
         }
     }
 }
