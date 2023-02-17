@@ -34,28 +34,19 @@ template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
 void solve() {
-    int n, k; cin >> n >> k;
-    vi d(55, 0);
-    rep(i, n) {
-        int l, r; cin >> l >> r;
+    int n, m; cin >> n >> m;
+    string s, t; cin >> s >> t;
 
-        if (k < l || k > r) continue;
-        d[l]++;
-        d[r + 1]--;
-    }
-
-    repa(i, 1, 55) {
-        d[i] += d[i - 1];
-    }
-
+    reverse(t.begin(), t.end());
+    string temp = s + t;
     int cnt = 0;
-    repa(i, 1, 55) {
-        if (i != k && d[i] >= d[k]) {
+    rep(i, ssz(temp) - 1) {
+        if (temp[i] == temp[i + 1]) {
             cnt++;
         }
     }
 
-    if (cnt == 0) cout << "YES\n";
+    if (cnt <= 1) cout << "YES\n";
     else cout << "NO\n";
 }
 

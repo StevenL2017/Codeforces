@@ -34,50 +34,16 @@ template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
 void solve() {
-    int n, m; cin >> n >> m;
-    string s, t; cin >> s >> t;
-
-    int first = 0;
-    rep(i, n - 1) {
-        if (s[i] == s[i + 1]) {
-            first = i + 1;
-            break;
-        }
+    int n, k; cin >> n >> k;
+    bool left = false, right = false;
+    rep(i, n) {
+        int l, r; cin >> l >> r;
+        if (l == k) left = true;
+        if (r == k) right = true;
     }
 
-    if (first > 0) {
-        string ss = s.substr(first, n);
-        reverse(ss.begin(), ss.end());
-        string temp = t + ss;
-        rep(i, ssz(temp) - 1) {
-            if (temp[i] == temp[i + 1]) {
-                cout << "NO\n";
-                return;
-            }
-        }
-    }
-
-    int second = 0;
-    rep(i, m - 1) {
-        if (t[i] == t[i + 1]) {
-            second = i + 1;
-            break;
-        }
-    }
-
-    if (second > 0) {
-        string tt = t.substr(second, m);
-        reverse(tt.begin(), tt.end());
-        string temp = s + tt;
-        rep(i, ssz(temp) - 1) {
-            if (temp[i] == temp[i + 1]) {
-                cout << "NO\n";
-                return;
-            }
-        }
-    }
-
-    cout << "YES\n";
+    if (left && right) cout << "YES\n";
+    else cout << "NO\n";
 }
 
 int main() {
