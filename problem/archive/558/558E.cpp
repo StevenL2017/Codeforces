@@ -54,12 +54,12 @@ public:
 
     void push(int root, int idx) {
         auto l = s[root].l, r = s[root].r;
-        if (s[root].lazy[idx] != -1) {
-            s[root].val[idx] = s[root].lazy[idx] * (r - l + 1);
-            if (l != r) {
-                s[root * 2].lazy[idx] = s[root].lazy[idx];
-                s[root * 2 + 1].lazy[idx] = s[root].lazy[idx];
-            }
+        if (l != r && s[root].lazy[idx] != -1) {
+            int m = l + (r - l) / 2;
+            s[root * 2].lazy[idx] = s[root].lazy[idx];
+            s[root * 2 + 1].lazy[idx] = s[root].lazy[idx];
+            s[root * 2].val[idx] = s[root].lazy[idx] * (m - l + 1);
+            s[root * 2 + 1].val[idx] = s[root].lazy[idx] * (r - m);
             s[root].lazy[idx] = -1;
         }
     }
@@ -88,29 +88,29 @@ public:
     }
     
     void update(int root, int idx, int L, int R, int val) {
-        push(root, idx);
         auto l = s[root].l, r = s[root].r;
         if (L <= l && r <= R) {
             s[root].val[idx] = val * (r - l + 1);
             s[root].lazy[idx] = val;
             return;
         }
-        if (L > r || R < l) return;
-        update(root * 2, idx, L, R, val);
-        update(root * 2 + 1, idx, L, R, val);
+        push(root, idx);
+        int m = l + (r - l) / 2;
+        if (L <= m) update(root * 2, idx, L, R, val);
+        if (R > m) update(root * 2 + 1, idx, L, R, val);
         merge(root, idx);
     }
     
     int query(int root, int idx, int L, int R) {
-        push(root, idx);
         auto l = s[root].l, r = s[root].r;
         if (L <= l && r <= R) {
             return s[root].val[idx];
         }
-        if (L > r || R < l) return 0;
+        push(root, idx);
         int ans = 0;
-        ans += query(root * 2, idx, L, R);
-        ans += query(root * 2 + 1, idx, L, R);
+        int m = l + (r - l) / 2;
+        if (L <= m) ans += query(root * 2, idx, L, R);
+        if (R > m) ans += query(root * 2 + 1, idx, L, R);
         return ans;
     }
 
