@@ -38,7 +38,7 @@ void solve() {
     cin >> n >> x >> p;
 
     int s = 0;
-    repa(i, 1, min(3 * n, p) + 1) {
+    repa(i, 1, min(2 * n, p) + 1) {
         s += i;
         if (s % n == (n - x) % n) {
             cout << "Yes\n";
