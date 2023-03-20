@@ -42,36 +42,36 @@ int add(int x, int y) {
     return x;
 }
 
-int sub(int x, int y) {
-    return add(x, -y);
-}
-
 int mul(int x, int y) {
     return (x * 1ll * y) % MOD;
-}
-
-int binpow(int x, int y) {
-    int z = 1;
-    while (y) {
-        if (y & 1) z = mul(z, x);
-        x = mul(x, x);
-        y >>= 1;
-    }
-    return z;
-}
-
-int inv(int x) {
-    return binpow(x, MOD - 2);
-}
-
-int divide(int x, int y) {
-    return mul(x, inv(y));
 }
 
 void solve() {
     int n, m; cin >> n >> m;
 
-    
+    vector<vi> f(m + 1, vi(n + 1, 0)), g(m + 1, vi(n + 1, 0));
+    f[0][0] = g[0][n] = 1;
+    rep(i, m) {
+        repa(j, 1, n + 1) {
+            rep(k, j + 1) {
+                f[i + 1][j] = add(f[i + 1][j], f[i][k]);
+            }
+            repa(k, j, n + 1) {
+                g[i + 1][j] = add(g[i + 1][j], g[i][k]);
+            }
+        }
+    }
+
+    int ans = 0;
+    repa(i, 1, n + 1) {
+        int a = f[m][i], b = 0;
+        repa(j, i, n + 1) {
+            b = add(b, g[m][j]);
+        }
+        ans = add(ans, mul(a, b));
+    }
+
+    cout << ans << endl;
 }
 
 int main() {
