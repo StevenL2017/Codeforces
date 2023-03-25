@@ -36,7 +36,9 @@ template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] <<
 void solve() {
     ll n; cin >> n;
 
-    ll s = sqrt(n);
+    ll s = sqrt(n) + 2;
+    while (s * s > n) s--;
+    while ((s + 1) * (s + 1) <= n) s++;
     if (s * s == n) {
         s--;
     }

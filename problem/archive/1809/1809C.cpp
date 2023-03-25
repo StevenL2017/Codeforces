@@ -49,11 +49,11 @@ void solve() {
 
     vi ans(neg_len, -10);
     int diff = neg_num - neg_len * (neg_len + 1) / 2;
-    int pos_first = 10 * (neg_len - diff) + 9;
-    if (neg_len < n) ans.push_back(pos_first);
-    rep(i, max(0, n - neg_len - 1)) {
+    int pos_first = 10 * (neg_len - diff) + 1;
+    if (neg_len < n)
+        ans.push_back(pos_first);
+    rep(i, max(0, n - neg_len - 1))
         ans.push_back(1000);
-    }
 
     out(ans);
 }
