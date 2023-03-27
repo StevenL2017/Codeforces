@@ -38,33 +38,30 @@ void solve() {
     vi a(n); in(a);
 
     sorta(a);
-    int d = a.back() - a.front();
-    if (d == 0) {
+    if (a.back() == 0) {
         cout << "No\n";
         return;
     }
 
     vi ans(n, -1), pos, neg;
+    int k = 0;
     rep(i, n) {
         if (a[i] > 0) pos.push_back(a[i]);
-        else neg.push_back(a[i]);
+        else if (a[i] < 0) neg.push_back(a[i]);
+        else ans[k++] = a[i];
     }
 
-    int i = 0, j = 0, k = 0;
-    ll pre_pos = 0, pre_neg = 0;
+    int i = 0, j = 0;
+    ll pre = 0;
     while (i < ssz(pos) || j < ssz(neg)) {
-        ll cur = 0;
-        while (j < ssz(neg) && cur < pre_pos) {
-            cur -= neg[j];
-            ans[k++] = neg[j++];
-        }
-        pre_neg = cur;
-        cur = 0;
-        while (i < ssz(pos) && cur < pre_neg) {
-            cur += pos[i];
+        if (i < ssz(pos) && pre < 0) {
+            pre += pos[i];
             ans[k++] = pos[i++];
         }
-        pre_pos = cur;
+        if (j < ssz(neg) && pre >= 0) {
+            pre += neg[j];
+            ans[k++] = neg[j++];
+        }
     }
 
     cout << "Yes\n";
