@@ -57,23 +57,12 @@ void solve() {
         return;
     }
 
-    if (left.back() + 1 < right.back()) {
-        ll ans = left.back() + 1;
-        rep(i, ssz(left) - 1) {
-            ans *= 10;
-            ans += left.back() + 1;
-        }
-        cout << ans << endl;
-        return;
-    }
-
-    int n = ssz(left), d = 0;
+    int n = ssz(left), d = n;
     reverse(left.begin(), left.end());
     reverse(right.begin(), right.end());
-    while (d < n) {
-        if (left[d] == right[d]) {
-            d++;
-        } else {
+    rep(i, n) {
+        if (left[i] != right[i]) {
+            d = i;
             break;
         }
     }
@@ -83,51 +72,33 @@ void solve() {
         return;
     }
 
-    ll ans = l;
-    int mn = 10;
-
+    ll pre = 0;
     int dmx = -1, dmn = 10;
-    ll res = 0;
-    rep(i, d + 1) {
+    rep(i, d) {
+        pre *= 10;
+        pre += left[i];
         dmx = max(dmx, left[i]);
         dmn = min(dmn, left[i]);
-        res *= 10;
-        res += left[i];
-    }
-    repa(i, left[d + 1], 10) {
-        int cur_dmx = max(dmx, i), cur_dmn = min(dmn, i);
-        if (cur_dmx - cur_dmn < mn) {
-            auto temp = res;
-            rep(i, n - 1 - d) {
-                temp *= 10;
-                temp += i;
-            }
-            if (temp >= l && temp <= r) {
-                mn = cur_dmx - cur_dmn;
-                ans = temp;
-            }
-        }
     }
 
-    dmx = -1, dmn = 10;
-    res = 0;
-    rep(i, d + 1) {
-        dmx = max(dmx, right[i]);
-        dmn = min(dmn, right[i]);
-        res *= 10;
-        res += right[i];
-    }
-    repd(i, right[d + 1], -1) {
-        int cur_dmx = max(dmx, i), cur_dmn = min(dmn, i);
-        if (cur_dmx - cur_dmn < mn) {
-            auto temp = res;
-            rep(i, n - 1 - d) {
-                temp *= 10;
-                temp += i;
+    ll ans = l;
+    int mn = 10;
+    repa(i, left[d], right[d] + 1) {
+        rep(j, 10) {
+            auto cur = pre;
+            cur *= 10;
+            cur += i;
+            rep(k, n - 1 - d) {
+                cur *= 10;
+                cur += j;
             }
-            if (temp >= l && temp <= r) {
-                mn = cur_dmx - cur_dmn;
-                ans = temp;
+            if (cur >= l && cur <= r) {
+                auto cur_dmx = max({dmx, i, j});
+                auto cur_dmn = min({dmn, i, j});
+                if (mn > cur_dmx - cur_dmn) {
+                    mn = cur_dmx - cur_dmn;
+                    ans = cur;
+                }
             }
         }
     }
