@@ -45,29 +45,30 @@ void solve() {
 
     int r, c;
     auto d1 = query(1, 1);
-    if (n >= m) {
-        int tr = d1 + 1;
-        auto d2 = query(tr, 1);
-        int tc = d2 + 1;
-        auto d3 = query(tr, tc);
-        if (d3 == 0) {
-            r = tr;
-            c = tc;
-        } else {
-            c = d1 + 1;
-            r = tr - d3;
-        }
-    } else {
-        int tc = d1 + 1;
-        auto d2 = query(1, tc);
-        int tr = d2 + 1;
-        auto d3 = query(tr, tc);
-        if (d3 == 0) {
-            r = tr;
-            c = tc;
-        } else {
+    if (d1 >= n) {
+        auto d2 = query(1, d1 + 1);
+        r = d2 + 1;
+        c = d1 + 1;
+    }
+    else if (d1 >= m) {
+        auto d2 = query(d1 + 1, 1);
+        r = d1 + 1;
+        c = d2 + 1;
+    }
+    else {
+        auto d2 = query(1, d1 + 1);
+        auto d3 = query(d1 + 1, 1);
+        if (d2 == d3 && d2 == d1) {
             r = d1 + 1;
-            c = tc - d3;
+            c = d1 + 1;
+        }
+        else if (d2 < d1) {
+            r = d2 + 1;
+            c = d1 + 1;
+        }
+        else {
+            r = d1 + 1;
+            c = d3 + 1;
         }
     }
 
