@@ -96,53 +96,39 @@ void solve() {
     while (q--) {
         int k; cin >> k;
         vi a(k); in(a);
-        
+
+        sort(a.begin(), a.end(), [&] (int u, int v) { return depth[u] > depth[v]; });
+        vi vis(k, 0);
+        rep(i, k) {
+            if (lca(a[0], a[i]) == a[i]) {
+                vis[i] = 1;
+            }
+        }
+
+        int idx = 0;
+        while (idx < k && vis[idx]) {
+            idx++;
+        }
+
+        if (idx == k) {
+            cout << "YES\n";
+            continue;
+        }
+
+        repa(i, idx, k) {
+            if (lca(a[idx], a[i]) == a[i]) {
+                vis[i] = 1;
+            }
+        }
+
         bool ok = true;
-
-        int d = -1;
-        map<int, int> cnt;
         rep(i, k) {
-            cnt[depth[a[i]]]++;
-            if (cnt[depth[a[i]]] > 2) {
-                ok = false;
-                break;
-            }
-            else if (cnt[depth[a[i]]] == 2) {
-                d = depth[a[i]];
-            }
-        }
-
-        if (!ok) cout << "NO\n";
-
-        int root = 0;
-        if (d == -1) {
-            int mn = n + 1;
-            rep(i, k) {
-                if (depth[a[i]] < mn) {
-                    mn = depth[a[i]];
-                    root = a[i];
-                }
-            }
-        } else {
-            int u = 0, v = 0;
-            rep(i, k) {
-                if (depth[a[i]] == d) {
-                    if (u == 0) {
-                        u = a[i];
-                    } else {
-                        v = a[i];
-                    }
-                }
-            }
-            root = lca(u, v);
-        }
-
-        rep(i, k) {
-            if (lca(root, a[i]) != root) {
+            if (!vis[i]) {
                 ok = false;
                 break;
             }
         }
+        ok &= depth[lca(a[0], a[idx])] <= depth[a.back()];
 
         if (ok) cout << "YES\n";
         else cout << "NO\n";
