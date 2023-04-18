@@ -35,42 +35,40 @@ template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] <<
 
 const int MAXN = 2e2 + 3;
 
-struct Edge {
-    int from, to, cap, flow;
-    Edge(int u, int v, int c, int f) : from(u), to(v), cap(c), flow(f) {}
-};
-
+// Dinic 算法
 struct Dinic {
+    struct Edge {
+        int v, nxt, cap, flow;
+    } e[MAXN * MAXN];
+
     int n, m;
-    vector<Edge> e;
     int fir[MAXN];
     int dep[MAXN];
     int cur[MAXN];
 
     void init(int n) {
+        memset(fir, -1, sizeof(fir));
+        m = 0;
         this->n = n;
-        this->m = 0;
-        memset(fir, -1, sizeof(int) * n);
-        e.clear();
     }
 
-    void add_edge(int from, int to, int cap) {
-        e.push_back(Edge(to, fir[from], cap, 0));
-        fir[from] = m++;
-        e.push_back(Edge(from, fir[to], 0, 0));
-        fir[to] = m++;
+    void add_edge(int u, int v, int w) {
+        e[m] = {v, fir[u], w, 0};
+        fir[u] = m++;
+        e[m] = {u, fir[v], 0, 0};
+        fir[v] = m++;
     }
 
     bool bfs(int s, int t) {
         queue<int> q;
-        memset(dep, 0, sizeof(int) * n);
+        memset(dep, 0, sizeof(int) * (n + 1));
         dep[s] = 1;
         q.push(s);
-        while (q.size()) {
+        while (!q.empty()) {
             int u = q.front();
             q.pop();
-            for (int i = fir[u]; ~i; i = e[i].to) {
-                int v = e[i].from;
+            for (int i = fir[u]; ~i; i = e[i].nxt) {
+                int v = e[i].v;
                 if ((!dep[v]) && (e[i].cap > e[i].flow)) {
                     dep[v] = dep[u] + 1;
                     q.push(v);
@@ -83,8 +81,8 @@ struct Dinic {
     int dfs(int u, int t, int bound) {
         if ((u == t) || (!bound)) return bound;
         int ret = 0;
-        for (int& i = cur[u]; ~i; i = e[i].to) {
-            int v = e[i].from, d;
+        for (int& i = cur[u]; ~i; i = e[i].nxt) {
+            int v = e[i].v, d;
             if ((dep[v] == dep[u] + 1) && (d = dfs(v, t, min(bound - ret, e[i].cap - e[i].flow)))) {
                 ret += d;
                 e[i].flow += d;
@@ -98,7 +96,7 @@ struct Dinic {
     int max_flow(int s, int t) {
         int flow = 0;
         while (bfs(s, t)) {
-            memcpy(cur, fir, sizeof(int) * n);
+            memcpy(cur, fir, sizeof(int) * (n + 1));
             flow += dfs(s, t, INT_MAX);
         }
         return flow;
@@ -150,15 +148,37 @@ void solve() {
         return;
     }
 
-    cout << flow << endl;
+    vector<vi> b(n);
+    for (auto& u: odd) {
+        for (int i = dinic.fir[u]; ~i; i = dinic.e[i].nxt) {
+            int v = dinic.e[i].v;
+            if (dinic.e[i].flow && v != s && v != t) {
+                b[u].push_back(v);
+                b[v].push_back(u);
+            }
+        }
+    }
 
-    // vector<vi> ans;
+    vector<vi> ans;
+    vi vis(n, 0);
+    rep(i, n) {
+        if (vis[i]) continue;
+        vi cur;
+        int x = i;
+        while (!vis[x]) {
+            cur.push_back(x + 1);
+            vis[x] = 1;
+            if (!vis[b[x][0]]) x = b[x][0];
+            else x = b[x][1];
+        }
+        ans.push_back(cur);
+    }
 
-    // cout << ssz(ans) << endl;
-    // rep(i, ssz(ans)) {
-    //     cout << ssz(ans[i]) << " ";
-    //     out(ans[i]);
-    // }
+    cout << ssz(ans) << endl;
+    rep(i, ssz(ans)) {
+        cout << ssz(ans[i]) << " ";
+        out(ans[i]);
+    }
 }
 
 int main() {
