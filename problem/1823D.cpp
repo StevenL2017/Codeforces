@@ -38,6 +38,34 @@ void solve() {
     vector<pair<int, int>> a(k);
     rep(i, k) cin >> a[i].first;
     rep(i, k) cin >> a[i].second;
+
+    if (a[0].first < a[0].second) {
+        cout << "NO\n";
+        return;
+    }
+
+    string ans = "abc", temp = "abc";
+    rep(_, a[0].second - 3) {
+        ans = 'a' + ans;
+    }
+    int j = 0;
+    repa(i, 1, k) {
+        int px = a[i - 1].first, pc = a[i - 1].second;
+        int x = a[i].first, c = a[i].second;
+        if (x - c < px - pc) {
+            cout << "NO\n";
+            return;
+        }
+        string cur(c - pc, (char)(i + 2 + 'a'));
+        ans += cur;
+        rep(_, (x - px) - (c - pc)) {
+            ans += temp[j];
+            j = (j + 1) % 3;
+        }
+    }
+
+    cout << "YES\n";
+    cout << ans << endl;
 }
 
 int main() {
