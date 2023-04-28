@@ -49,6 +49,10 @@ void solve() {
         ans = 'a' + ans;
     }
     int j = 0;
+    rep(_, a[0].first - a[0].second) {
+        ans += temp[j];
+        j = (j + 1) % 3;
+    }
     repa(i, 1, k) {
         int px = a[i - 1].first, pc = a[i - 1].second;
         int x = a[i].first, c = a[i].second;
