@@ -36,7 +36,26 @@ template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] <<
 void solve() {
     int n, k; cin >> n >> k;
 
-    
+    if (k == n - 1) {
+        if (n == 4) {
+            cout << -1 << endl;
+        } else {
+            cout << 1 << " " << n - 3 << endl;
+            cout << n - 2 << " " << n - 1 << endl;
+            cout << 0 << " " << 2 << endl;
+            repa(i, 3, n / 2) {
+                cout << i << " " << ((n - 1) ^ i) << endl;
+            }
+        }
+        return;
+    }
+
+    cout << k << " " << n - 1 << endl;
+    if (k) cout << 0 << " " << ((n - 1) ^ k) << endl;
+    repa(i, 1, n / 2) {
+        if (i == 0 || i == k || ((n - 1) ^ i) == k) continue;
+        cout << i << " " << ((n - 1) ^ i) << endl;
+    }
 }
 
 int main() {
