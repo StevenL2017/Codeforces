@@ -65,14 +65,19 @@ void solve() {
     repa(i, 1, n - k) {
         c[i] += c[i - 1];
     }
+
+    vector<ll> cc(1, 0);
+    rep(i, n - k) {
+        cc.push_back(c[i]);
+    }
     rep(i, k) {
-        c.push_back(c.back());
+        cc.push_back(cc.back());
     }
 
     ll ans = 0;
     repa(i, (k + d) / (1 + d), k + 1) {
-        if ((i - 1) * 1ll * (d + 1) < n) {
-            ans = max(ans, b[i] + c[n - (i - 1) * (d + 1)]);
+        if ((i - 1) * 1ll * (d + 1) + 1 <= n) {
+            ans = max(ans, b[i - 1] + cc[n - (i - 1) * 1ll * (d + 1) - 1]);
         }
     }
 
