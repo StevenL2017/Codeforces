@@ -37,18 +37,17 @@ void solve() {
     int n; cin >> n;
     vi a(n); in(a);
 
-    multiset<pair<int, int>> left, right;
+    multiset<int> left, right;
     repa(i, 1, n) {
-        right.emplace(a[i] - i, -i);
+        right.insert(a[i] - i);
     }
 
-    int ans = 0, j = 0;
+    int ans = 0;
     repa(i, 1, n - 1) {
-        left.emplace(a[i - 1] - j, i - 1);
-        right.erase(right.find({a[i] - i, -i}));
+        left.insert(a[i - 1] + (i - 1));
+        right.erase(right.find(a[i] - i));
         auto l = *left.rbegin(), r = *right.rbegin();
-        ans = max(ans, a[i] + l.first + j - 1 + r.first + i);
-        j--;
+        ans = max(ans, a[i] + l + r);
     }
 
     cout << ans << endl;
