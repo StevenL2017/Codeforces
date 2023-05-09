@@ -33,41 +33,75 @@ using namespace std;
 template <class T> void in(vector<T>& a) { rep(i, ssz(a)) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { rep(i, ssz(a)) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
+struct Node {
+    int l = 0, r = 0;
+    int val = 0, lazy = 0;
+};
+
 class SegmentTree {
 private:
-    vector<int> mx;
+    vector<Node> s;
 
 public:
-    SegmentTree(int n) {
-        mx.resize(n * 4, -2e9);
+    SegmentTree() {}
+
+    SegmentTree(int n, vi& dp) {
+        s.resize(n * 4);
+        build(1, 1, n, dp);
     }
-    
-    void update(int root, int l, int r, int idx, int val) {
+
+    void push(int root) {
+        auto l = s[root].l, r = s[root].r;
+        if (l != r && s[root].lazy != 0) {
+            auto m = l + (r - l) / 2;
+            s[root * 2].val += s[root].lazy;
+            s[root * 2].lazy += s[root].lazy;
+            s[root * 2 + 1].val += s[root].lazy;
+            s[root * 2 + 1].lazy += s[root].lazy;
+            s[root].lazy = 0;
+        }
+    }
+
+    void merge(int root) {
+        s[root].val = max(s[root * 2].val, s[root * 2 + 1].val);
+    }
+
+    void build(int root, int l, int r, vi& dp) {
+        s[root].l = l, s[root].r = r;
         if (l == r) {
-            mx[root] = val;
+            s[root].val = dp[l - 1];
             return;
         }
         int m = l + (r - l) / 2;
-        if (idx <= m) {
-            update(root * 2, l, m, idx, val);
-        } else {
-            update(root * 2 + 1, m + 1, r, idx, val);
-        }
-        mx[root] = max(mx[root * 2], mx[root * 2 + 1]);
+        build(root * 2, l, m, dp);
+        build(root * 2 + 1, m + 1, r, dp);
+        merge(root);
     }
     
-    int query(int root, int l, int r, int L, int R) {
+    void update(int root, int L, int R) {
+        auto l = s[root].l, r = s[root].r;
         if (L <= l && r <= R) {
-            return mx[root];
+            s[root].val += 1;
+            s[root].lazy += 1;
+            return;
         }
-        int ans = -2e9;
+        push(root);
         int m = l + (r - l) / 2;
-        if (L <= m) {
-            ans = query(root * 2, l, m, L, R);
+        if (L <= m) update(root * 2, L, R);
+        if (R > m) update(root * 2 + 1, L, R);
+        merge(root);
+    }
+    
+    int query(int root, int L, int R) {
+        auto l = s[root].l, r = s[root].r;
+        if (L <= l && r <= R) {
+            return s[root].val;
         }
-        if (R > m) {
-            ans = max(ans, query(root * 2 + 1, m + 1, r, L, R));
-        }
+        push(root);
+        int ans = 0;
+        int m = l + (r - l) / 2;
+        if (L <= m) ans = max(ans, query(root * 2, L, R));
+        if (R > m) ans = max(ans, query(root * 2 + 1, L, R));
         return ans;
     }
 };
@@ -76,38 +110,36 @@ void solve() {
     int n, k; cin >> n >> k;
     vi a(n); in(a);
 
-    vector<vi> f(n, vi(k + 1, -2e9));
-    f[0][1] = 1;
-
-    vector<SegmentTree> trees(k + 1, SegmentTree(n));
-    trees[1].update(1, 1, n, 1, 1);
-
-    vi last(n + 1, -1);
-    last[a[0]] = 0;
-
-    repa(i, 1, n) {
-        repa(j, 1, k + 1) {
-            int mx1 = -2e9, mx2 = -2e9;
-            if (j > 1) {
-                if (last[a[i]] >= 1) mx1 = trees[j - 1].query(1, 1, n, 1, last[a[i]]);
-                if (last[a[i]] >= 0) mx2 = trees[j - 1].query(1, 1, n, last[a[i]] + 1, i) + 1;
-                else mx2 = f[i - 1][j] + 1;
-            } else {
-                mx2 = f[i - 1][j] + (int)(last[a[i]] < 0);
-            }
-            if (mx1 > -2e9) f[i][j] = max(f[i][j], mx1);
-            if (mx2 > -2e9) f[i][j] = max(f[i][j], mx2);
-            trees[j].update(1, 1, n, i + 1, f[i][j]);
-
-            if (j < k) {
-                f[i][j + 1] = max(f[i][j + 1], f[i][j] + 1);
-                trees[j + 1].update(1, 1, n, i + 1, f[i][j + 1]);
-            }
+    vi last(n + 1, -1), p(n, -1);
+    rep(i, n) {
+        if (last[a[i]] != -1) {
+            p[i] = last[a[i]];
+        } else {
+            p[i] = 0;
         }
         last[a[i]] = i;
     }
 
-    cout << f[n - 1][k] << endl;
+    vector<vi> f(k + 1, vi(n, 0));
+    set<int> s;
+    rep(i, n) {
+        s.insert(a[i]);
+        f[1][i] = ssz(s);
+    }
+    auto calc = [&] (int j) {
+        SegmentTree tree(n, f[j - 1]);
+        rep(i, n) {
+            if (p[i] < i) {
+                tree.update(1, p[i] + 1, i);
+            }
+            f[j][i] = max(f[j - 1][i], tree.query(1, 1, i));
+        }
+    };
+    repa(j, 2, k + 1) {
+        calc(j);
+    }
+
+    cout << f[k][n - 1] << endl;
 }
 
 int main() {
