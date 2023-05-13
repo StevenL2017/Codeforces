@@ -35,35 +35,28 @@ void solve() {
     while (q--) {
         int k; cin >> k;
 
-        auto check = [&] (ll x) -> bool {
-            int remain = k, j = -1;
-            ll tot = 0;
-            for (int i = 0; i < n; i++) {
-                if (a[i] + remain < x) {
-                    return false;
-                }
-                if (a[i] < x) {
-                    tot += a[i] + remain - x;
-                    remain--;
-                } else {
-                    tot += a[i] - x;
-                    continue;
-                }
-                j = i;
+        vi b = a;
+        for (int i = 0; i < n; i++) {
+            if (k == 0) {
+                break;
             }
-            return ((remain % 2 == 0 && tot >= remain / 2) || (remain % 2 == 1 && j < n - 1));
-        };
+            if (k % 2 == 0 && i == n - 1) {
+                break;
+            }
+            b[i] += k;
+            k--;
+        }
 
-        ll left = -1e18, right = 1e18;
-        ll ans = left;
-        while (left <= right) {
-            auto mid = left + (right - left) / 2;
-            if (check(mid)) {
-                left = mid + 1;
-                ans = mid;
-            } else {
-                right = mid - 1;
-            }
+        k /= 2;
+        sort(b.begin(), b.end());
+        ll diff = 0;
+        for (int i = 0; i < n; i++) {
+            diff += b[i] - b[0];
+        }
+        int ans = b[0];
+        if (k > diff) {
+            k -= diff;
+            ans -= (k + n - 1) / n;
         }
 
         cout << ans << " ";
