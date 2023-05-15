@@ -28,17 +28,6 @@ template <class T> void out(const vector<T>& a) { for (int i = 0; i < ssz(a); i+
 
 const int MOD = 1e9 + 7;
 
-int add(int x, int y) {
-    x += y;
-    while (x >= MOD) x -= MOD;
-    while (x < 0) x += MOD;
-    return x;
-}
-
-int sub(int x, int y) {
-    return add(x, -y);
-}
-
 int mul(int x, int y) {
     return (x * 1ll * y) % MOD;
 }
