@@ -27,9 +27,13 @@ template <class T> void in(vector<T>& a) { for (int i = 0; i < ssz(a); i++) cin 
 template <class T> void out(const vector<T>& a) { for (int i = 0; i < ssz(a); i++) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
 ll calc(ll s, ll k) {
+    ll ans = s * k;
     ll x = (5 * k - s) / 40;
-    if (x <= 0) return s * k;
-    return max(s * k, (s + 20 * x) * (k - 4 * x));
+    x = min(x, k / 4);
+    if (x > 0) ans = max(ans, (s + 20 * x) * (k - 4 * x));
+    x = min(x + 1, k / 4);
+    if (x > 0) ans = max(ans, (s + 20 * x) * (k - 4 * x));
+    return ans;
 }
 
 void solve() {
@@ -46,7 +50,7 @@ void solve() {
     }
 
     ll ans = s * k;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 10; i++) {
         int last = s % 10;
         s += last;
         k--;
