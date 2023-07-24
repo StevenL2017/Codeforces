@@ -30,10 +30,15 @@ void solve() {
     int n, k; cin >> n >> k;
     vi a(n); in(a);
 
-    if (a.front() != 1) {
-        cout << 1 << endl;
-        return;
+    ll ans = 1, i = 0;
+    while (k--) {
+        while (i < n && a[i] <= ans + i) {
+            i++;
+        }
+        ans += i;
     }
+
+    cout << ans << endl;
 }
 
 int main() {
