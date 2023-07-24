@@ -29,16 +29,15 @@ template <class T> void out(const vector<T>& a) { for (int i = 0; i < ssz(a); i+
 void solve() {
     ll n, k; cin >> n >> k;
 
-    if (k > 1e6) {
-        cout << 0 << endl;
-        return;
-    }
-
     ll f = 1, g = 1;
     for (int i = 0; i < k - 3; i++) {
         int temp = f;
         f += g;
         g = temp;
+        if (f > n) {
+            cout << 0 << endl;
+            return;
+        }
     }
 
     int ans = 0;
