@@ -30,26 +30,14 @@ void solve() {
     int n, k; cin >> n >> k;
     vi a(n); in(a);
 
-    set<pair<int, int>> s;
+    vi idx(n);
+    iota(idx.begin(), idx.end(), 0);
+    stable_sort(idx.begin(), idx.end(), [&] (int i, int j) { return (a[i] - 1) % k > (a[j] - 1) % k; });
+
     for (int i = 0; i < n; i++) {
-        if (a[i] % k == 0) s.emplace(-k, i + 1);
-        else s.emplace(-(a[i] % k), i + 1);
+        cout << idx[i] + 1 << " ";
     }
-
-    vi ans;
-    while (!s.empty()) {
-        auto [x, i] = *s.begin();
-        s.erase(s.begin());
-        x = -x;
-        x -= k;
-        if (x <= 0) {
-            ans.push_back(i);
-        } else {
-            s.emplace(-x, i);
-        }
-    }
-
-    out(ans);
+    cout << endl;
 }
 
 int main() {
