@@ -39,19 +39,22 @@ void solve() {
         e[v].insert(u);
     }
 
-    vi vis(n, 0);
+    vi ans, vis(n, 0);
+    set<int> s;
     function<void(int)> dfs = [&] (int u) {
-        cout << u + 1 << " ";
+        ans.push_back(u + 1);
         vis[u] = 1;
+        s.erase(u);
         for (auto v : e[u]) {
             if (vis[v]) continue;
-            dfs(v);
-
+            s.insert(v);
         }
+        if (!s.empty()) dfs(*s.begin());
     };
+    s.insert(0);
     dfs(0);
 
-    cout << endl;
+    out(ans);
 }
 
 int main() {
