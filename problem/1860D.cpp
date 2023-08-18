@@ -26,84 +26,24 @@ using namespace std;
 template <class T> void in(vector<T>& a) { for (int i = 0; i < ssz(a); i++) cin >> a[i]; }
 template <class T> void out(const vector<T>& a) { for (int i = 0; i < ssz(a); i++) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
-const int N = 105;
-const int M = 1250;
-
-int f[N][N][M];
-
 void solve() {
     string s; cin >> s;
 
     int n = ssz(s);
-    vi pre(n + 1, 0);
-    for (int i = 0; i < n; i++) {
-        pre[i + 1] = pre[i] + (int)(s[i] == '1');
-    }
+    int c1 = count(s.begin(), s.end(), '1'), c0 = n - c1;
+    int need = (n * (n - 1) / 2 - c0 * (c0 - 1) / 2 + c1 * (c1 - 1) / 2) / 2;
 
-    int one = pre[n], zero = n - one;
-    int tot = 0;
-    if (one % 2 == 0) {
-        tot = one / 2 * zero;
-    } else {
-        tot = zero / 2 * one;
-    }
-
+    vector<vi> f(c1 + 1, vi(need + 1, 1e9));
+    f[0][0] = 0;
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            for (int k = 0; k <= tot; k++) {
-                f[i][j][k] = INT_MAX;
+        for (int j = c1 - 1; j >= 0; j--) {
+            for (int k = 0; k + i <= need; k++) {
+                f[j + 1][k + i] = min(f[j + 1][k + i], f[j][k] + (s[i] == '0'));
             }
         }
     }
 
-    for (int i = n - 2; i >= 0; i--) {
-        for (int j = i + 1; j < n; j++) {
-            if (i + 1 == j) {
-                if (s[i] == '0' && s[j] == '1') {
-                    f[i][j][1] = 0;
-                    f[i][j][0] = 1;
-                }
-                else if (s[i] == '1' && s[j] == '0') {
-                    f[i][j][1] = 1;
-                    f[i][j][0] = 0;
-                }
-                else {
-                    f[i][j][0] = 0;
-                }
-                continue;
-            }
-            for (int k = 0; k <= tot; k++) {
-                if (f[i + 1][j][k] == INT_MAX) continue;
-                if (s[i] == '0') {
-                    auto one = pre[j + 1] - pre[i + 1];
-                    for (int z = 0; z <= one; z++) {
-                        f[i][j][k + one - z] = min(f[i][j][k + one - z], f[i + 1][j][k] + min(z, 1));
-                    }
-                } else {
-                    auto zero = j - (i + 1) + 1 - (pre[j + 1] - pre[i + 1]);
-                    for (int z = 0; z <= zero; z++) {
-                        f[i][j][k + z] = min(f[i][j][k + z], f[i + 1][j][k] + min(z, 1));
-                    }
-                }
-            }
-            for (int k = 0; k <= tot; k++) {
-                if (f[i][j - 1][k] == INT_MAX) continue;
-                if (s[j] == '0') {
-                    auto one = pre[j] - pre[i];
-                    for (int z = 0; z <= one; z++) {
-                        f[i][j][k + z] = min(f[i][j][k + z], f[i][j - 1][k] + min(z, 1));
-                    }
-                } else {
-                    auto zero = j - 1 - i + 1 - (pre[j] - pre[i]);
-                    for (int z = 0; z <= zero; z++) {
-                        f[i][j][k + zero - z] = min(f[i][j][k + zero - z], f[i][j - 1][k] + min(z, 1));
-                    }
-                }
-            }
-        }
-    }
-
-    cout << f[0][n - 1][tot] << endl;
+    cout << f[c1][need] << endl;
 }
 
 int main() {
