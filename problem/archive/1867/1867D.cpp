@@ -29,11 +29,15 @@ template <class T> void out(const vector<T>& a) { for (int i = 0; i < ssz(a); i+
 void solve() {
     int n, k;
     cin >> n >> k;
-    vi b(n); in(b);
+    vi a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        a[i]--;
+    }
 
     if (k == 1) {
         for (int i = 0; i < n; i++) {
-            if (b[i] != i + 1) {
+            if (a[i] != i) {
                 cout << "NO\n";
                 return;
             }
@@ -41,6 +45,31 @@ void solve() {
         cout << "YES\n";
         return;
     }
+
+    vi vis(n, 0);
+    for (int i = 0; i < n; i++) {
+        if (vis[i]) continue;
+        int u = i;
+        while (!vis[u]) {
+            vis[u] = 1;
+            u = a[u];
+        }
+        if (vis[u] == 1) {
+            int cnt = 0, v = u;
+            do {
+                u = a[u];
+                cnt++;
+            } while (u != v);
+            if (cnt != k) {
+                cout << "NO\n";
+                return;
+            }
+        }
+        for (int u = i; vis[u] != 2; u = a[u]) {
+            vis[u] = 2;
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {
