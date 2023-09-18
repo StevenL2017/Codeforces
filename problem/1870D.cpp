@@ -31,40 +31,19 @@ void solve() {
     vi c(n); in(c);
     int k; cin >> k;
 
-    map<int, int> mp;
+    for (int i = n - 2; i >= 0; i--) {
+        c[i] = min(c[i], c[i + 1]);
+    }
+
+    vi ans(n);
+    int cur = k;
     for (int i = 0; i < n; i++) {
-        mp[c[i]] = i;
-    }
-
-    vi ans(n, 0);
-    int mn = *min_element(c.begin(), c.end());
-    int mx_cnt = k / mn;
-    int last = -1;
-    for (auto [x, v]: mp) {
-        if (k / x == mx_cnt) {
-            last = max(last, v);
+        int v = c[i] - (i ? c[i - 1] : 0);
+        if (v) {
+            cur = min(cur, k / v);
         }
-    }
-    int last2 = last;
-    int mod = k % c[last], mx = 0;
-    for (int i = last + 1; i < n; i++) {
-        if (c[i] > c[last] && mod / (c[i] - c[last]) >= mx) {
-            last2 = i;
-            mx = mod / (c[i] - c[last]);
-        }
-    }
-    int cnt = mx_cnt - mx;
-    ans[0] += cnt;
-    if (last < n - 1) {
-        ans[last + 1] -= cnt;
-    }
-    ans[0] += mx;
-    if (last2 < n - 1) {
-        ans[last2 + 1] -= mx;
-    }
-
-    for (int i = 1; i < n; i++) {
-        ans[i] += ans[i - 1];
+        k -= cur * v;
+        ans[i] = cur;
     }
     out(ans);
 }
