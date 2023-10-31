@@ -27,29 +27,17 @@ template <class T> void in(vector<T>& a) { for (int i = 0; i < ssz(a); i++) cin 
 template <class T> void out(const vector<T>& a) { for (int i = 0; i < ssz(a); i++) cout << a[i] << " \n"[i + 1 == ssz(a)]; }
 
 void solve() {
-    int n, q;
-    cin >> n >> q;
+    int n; cin >> n;
     vi a(n); in(a);
-    vi b(q); in(b);
 
-    vi c, vis(31, 0);
-    for (auto x: b) {
-        if (!vis[x]) {
-            c.push_back(x);
-            vis[x] = 1;
+    for (int i = 0; i < n - 1; i++) {
+        int x = i + 1;
+        if (a[i] > a[i + 1] && (x & (x - 1))) {
+            cout << "NO\n";
+            return;
         }
     }
-
-    for (auto &x: a) {
-        for (auto i: c) {
-            int lb = x & -x;
-            if (lb >= (1 << i)) {
-                x |= 1 << (i - 1);
-            }
-        }
-    }
-
-    out(a);
+    cout << "YES\n";
 }
 
 int main() {
