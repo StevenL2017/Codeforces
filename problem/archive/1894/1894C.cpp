@@ -35,12 +35,8 @@ void solve() {
     vi vis(n, 0);
     while (!vis[i]) {
         vis[i] = 1;
-        if (b[i] < 1 || b[i] > n) {
-            if (c < k) {
-                cout << "No\n";
-            } else {
-                cout << "Yes\n";
-            }
+        if (b[i] > n) {
+            cout << "No\n";
             return;
         }
         c++;
