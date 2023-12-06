@@ -31,12 +31,30 @@ void solve() {
     cin >> start.first >> start.second;
     cin >> end.first >> end.second;
     int n; cin >> n;
-    vector<array<int, 3>> a(n, array<int, 3>());
+    map<pair<int, int>, int> mp;
     for (int i = 0; i < n; i++) {
-        cin >> a[i][0] >> a[i][1] >> a[i][2];
+        int r, a, b;
+        cin >> r >> a >> b;
+        for (int c = a; c <= b; c++) {
+            mp[make_pair(r, c)] = -1;
+        }
     }
 
-    
+    queue<pair<int, int>> q;
+    q.push(start);
+    mp[start] = 0;
+    while (!q.empty()) {
+        auto u = q.front();
+        q.pop();
+        for (auto [dr, dc]: vector<pair<int, int>>{{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, -1}, {1, 1}, {-1, -1}, {-1, 1}}) {
+            pair<int, int> v = {u.first + dr, u.second + dc};
+            if (mp[v] == -1) {
+                mp[v] = mp[u] + 1;
+                q.push(v);
+            }
+        }
+    }
+    cout << mp[end] << endl;
 }
 
 int main() {
